@@ -1,0 +1,32 @@
+{
+  "baseline": {
+    "normal": {"accuracy": 0.710, "correct": 710, "total": 1000},
+    "hard1": {"accuracy": 0.6522, "correct": 45, "total": 69},
+    "hard2": {"accuracy": 0.995, "correct": 199, "total": 200},
+    "hard3": {"accuracy": 0.5275, "correct": 211, "total": 400}
+  },
+  "improved": {
+    "normal": {"accuracy": 0.824, "correct": 824, "total": 1000},
+    "hard1": {"accuracy": 0.7391, "correct": 51, "total": 69},
+    "hard2": {"accuracy": 0.955, "correct": 191, "total": 200},
+    "hard3": {"accuracy": 0.635, "correct": 254, "total": 400}
+  },
+  "changes_summary": [
+    "Added simple projection collapse lemmas (x=x*y -> LEFT, x=y*x -> RIGHT)",
+    "Fixed C1 motif (topShape != m-m)",
+    "Fixed C3 motif (rhsVars >= 3)",
+    "Fixed C6 motif (Rx=FALSE)",
+    "Removed C8 motif (31.9% accuracy)",
+    "Restricted C9 motif (added XOR_B, square, imb conditions)",
+    "Fixed C10 motif (RP_B=TRUE)",
+    "Fixed C13 motif (RP_B=TRUE)",
+    "Removed C14 motif (15.4% accuracy)",
+    "Fixed T4 (Lx=FALSE)",
+    "Removed T5 (21.7% accuracy)",
+    "Removed T7 (25% accuracy)",
+    "Restricted T6 (vA >= 3)",
+    "Removed F2 (33.6% accuracy)",
+    "Added NR_bare_v4 (bare vA>=4, topShape!=m-m -> TRUE)",
+    "Added NR_bare_v5 (bare vA>=5 -> TRUE)"
+  ]
+}

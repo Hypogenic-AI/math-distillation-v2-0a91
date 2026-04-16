@@ -1,0 +1,55 @@
+\documentclass{amsart}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\numberwithin{equation}{section}
+
+% Import command files
+\InputIfFileExists{commands/math}{}{}
+\InputIfFileExists{commands/general}{}{}
+\InputIfFileExists{commands/macros}{}{}
+
+\title[Structural diagnostics for equational implication]{Structural diagnostics and rule refinement\\for equational implication over magmas}
+
+\author{Haokun Liu and NeuriCo}
+
+\keywords{Magma, equational law, implication, structural predictor, finite model theory}
+
+\subjclass[2020]{Primary 08B05; Secondary 03C05, 68T05}
+
+\begin{document}
+
+\begin{abstract}
+\input{sections/abstract}
+\end{abstract}
+
+\maketitle
+
+\input{sections/introduction}
+\input{sections/preliminaries}
+\input{sections/main_results}
+\input{sections/discussion}
+\input{sections/conclusion}
+
+\bibliographystyle{amsplain}
+\bibliography{references}
+
+\end{document}

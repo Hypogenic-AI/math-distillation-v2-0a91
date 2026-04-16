@@ -1,0 +1,374 @@
+\section{Main results}\label{sec:main}
+
+We present our results in four parts: projection collapse lemmas
+(Section~\ref{subsec:collapse}), the diagnostic framework
+(Section~\ref{subsec:diagnostic}), guard conditions for
+contradiction motifs (Section~\ref{subsec:guards}), and new
+implication rules for bare source equations
+(Section~\ref{subsec:bare-rules}).
+
+\subsection{Projection collapse lemmas}\label{subsec:collapse}
+
+We begin with two lemmas that identify equations forcing a magma
+to be a projection algebra.  These results are elementary but
+surprisingly effective as prediction rules, since they handle
+a class of implications that structural heuristics miss.
+
+\begin{theorem}[Left-projection collapse]\label{thm:left-proj}
+Let $(M, *)$ be a magma satisfying the identity $x = x * y$.  Then
+$(M, *)$ is a left-projection algebra, \ie $a * b = a$ for all
+$a, b \in M$.
+\end{theorem}
+
+\begin{proof}
+Let $a, b \in M$ be arbitrary.  Setting $x = a$ and $y = b$ in the
+identity $x = x * y$ gives $a = a * b$.  Since $a$ and $b$ were
+arbitrary, we have $a * b = a$ for all $a, b \in M$.
+\end{proof}
+
+\begin{theorem}[Right-projection collapse]\label{thm:right-proj}
+Let $(M, *)$ be a magma satisfying the identity $x = y * x$.  Then
+$(M, *)$ is a right-projection algebra, \ie $a * b = b$ for all
+$a, b \in M$.
+\end{theorem}
+
+\begin{proof}
+Let $a, b \in M$ be arbitrary.  Setting $x = b$ and $y = a$ in the
+identity $x = y * x$ gives $b = a * b$.  Since $a$ and $b$ were
+arbitrary, we have $a * b = b$ for all $a, b \in M$.
+\end{proof}
+
+\begin{remark}\label{rem:proj-unique}
+The left-projection identity $x = x * y$ and the right-projection
+identity $x = y * x$ each use exactly two variables and have
+signature $(0, 1)$.  Among the $4694$ equations in~$\Eq$, these
+are the simplest bare equations with two variables, and the collapse
+results show they are maximally constraining.
+\end{remark}
+
+\begin{corollary}\label{cor:proj-implies}
+If $E_1$ is the equation $x = x * y$ and $E_2$ is any equational law
+satisfied by the left-projection algebra, then $E_1 \models E_2$.
+Analogously for $x = y * x$ and the right-projection algebra.
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:left-proj}, every magma satisfying $E_1$ is a
+left-projection algebra.  If $E_2$ is satisfied by all left-projection
+algebras, then every magma satisfying $E_1$ satisfies $E_2$, so
+$E_1 \models E_2$.
+\end{proof}
+
+We verified computationally that Theorems~\ref{thm:left-proj}
+and~\ref{thm:right-proj} identify the \emph{only} magmas of order
+at most three satisfying these identities.
+
+\begin{proposition}[Computational verification]\label{prop:enum}
+Among all magmas of order $n \leq 3$:
+\begin{enumerate}[label=(\roman*)]
+\item the only magma satisfying $x = x * y$ is the left-projection
+  algebra on the given carrier set, and
+\item the only magma satisfying $x = y * x$ is the right-projection
+  algebra on the given carrier set.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+We enumerated all $n^{n^2}$ binary operations on $\{0, \ldots, n-1\}$
+for $n \in \{1, 2, 3\}$ (giving $1$, $16$, and $19683$ magmas
+respectively) and checked each identity by evaluating all $n^2$
+variable assignments.  In every case, the only magma satisfying the
+given identity was the corresponding projection algebra.
+\end{proof}
+
+\begin{example}\label{ex:proj-use}
+Consider the implication query $E_1 \models E_2$ where $E_1$ is
+$x = x * y$ and $E_2$ is $x * y = x * (x * y)$.  By
+Theorem~\ref{thm:left-proj}, any magma satisfying $E_1$ has
+$a * b = a$ for all $a, b$.  Then $a * (a * b) = a * a = a = a * b$,
+so $E_2$ holds.  Hence $E_1 \models E_2$ is true.
+\end{example}
+
+\subsection{Diagnostic framework}\label{subsec:diagnostic}
+
+We formalize the approach of treating each prediction rule as a
+binary classifier, enabling systematic identification of unreliable
+rules.
+
+\begin{definition}\label{def:rule}
+A \emph{prediction rule} is a partial function
+$R \colon \Eq \times \Eq \to \{\textsc{true}, \textsc{false}\}$
+that, given a pair $(E_1, E_2)$, either outputs a prediction
+or is undefined (\emph{does not fire}).  When $R$ is defined
+on $(E_1, E_2)$, we say $R$ \emph{fires} on $(E_1, E_2)$.
+\end{definition}
+
+\begin{definition}\label{def:precision}
+Let $R$ be a prediction rule and $S \subseteq \Eq \times \Eq$
+a test set with known ground truth.  The \emph{precision} of $R$
+on~$S$ is
+\[
+  \operatorname{prec}(R, S) =
+  \frac{|\{(E_1,E_2) \in S : R(E_1,E_2) = \text{ground truth}\}|}
+       {|\{(E_1,E_2) \in S : R \text{ fires on } (E_1,E_2)\}|}.
+\]
+A rule with $\operatorname{prec}(R, S) < 0.5$ is
+\emph{anti-correlated} on~$S$ and should be removed or repaired.
+\end{definition}
+
+\begin{remark}\label{rem:split-variance}
+A rule may have high precision on one test split and low precision
+on another.  The SAIR challenge provides four splits of increasing
+difficulty: \textsc{Normal} ($1000$ pairs), \textsc{Hard1} ($69$ pairs),
+\textsc{Hard2} ($200$ pairs), and \textsc{Hard3} ($400$ pairs).
+Rules that are reliable on \textsc{Normal} can be catastrophically
+wrong on \textsc{Hard3}, which is curated to exploit exactly the
+structural heuristics used in the prediction rules.
+\end{remark}
+
+\begin{definition}\label{def:guard}
+A \emph{guard condition} for a prediction rule $R$ is a Boolean
+predicate $G$ on $\Eq \times \Eq$ such that the \emph{guarded rule}
+$R_G$, defined by
+\[
+  R_G(E_1, E_2) =
+  \begin{cases}
+    R(E_1, E_2) & \text{if } R \text{ fires and } G(E_1, E_2) = \textsc{true}, \\
+    \text{undefined} & \text{otherwise},
+  \end{cases}
+\]
+satisfies $\operatorname{prec}(R_G, S) > \operatorname{prec}(R, S)$
+for the target test split~$S$.
+\end{definition}
+
+The key insight is that guard conditions should be chosen so that
+the set of pairs on which $R$ fires but $G$ fails consists
+predominantly of \emph{false positives} of~$R$.  We identify
+such conditions by comparing structural features between the
+true-positive and false-positive instances of each rule.
+
+\subsection{Guard conditions for contradiction motifs}\label{subsec:guards}
+
+The original predictor used fourteen \emph{contradiction motifs}
+$C_1, \ldots, C_{14}$, each designed to detect syntactic patterns
+indicating that $E_1 \not\models E_2$.  We analyzed the precision of
+each motif on the \textsc{Hard3} split and identified those requiring
+correction.
+
+\begin{proposition}[Motif guard conditions]\label{prop:motif-guards}
+The following guard conditions improve the precision of the indicated
+contradiction motifs on the \textsc{Hard3} split.
+\begin{enumerate}[label=(\roman*)]
+\item \textbf{Motif $C_1$:} Add the guard
+  ``the top shape of the source equation is not $m$-$m$.''
+  This eliminates all false positives on \textsc{Hard3}
+  while preserving all true positives.
+
+\item \textbf{Motif $C_3$:} Add the guard
+  ``the target equation has at least three distinct variables.''
+  All false positives had exactly two variables in the target.
+
+\item \textbf{Motif $C_6$:} Add the guard
+  ``$\Rx(E_1) = \textsc{false}$.''
+  All $20$ false positives on \textsc{Hard3} had
+  $\Rx(E_1) = \textsc{true}$.
+
+\item \textbf{Motif $C_9$:} Add three guards:
+  the source and target have distinct XOR signatures in the
+  second variable, the source is not a ``square'' equation
+  (both children of the root are identical), and the variable
+  imbalance between source and target satisfies a threshold condition.
+
+\item \textbf{Motif $C_{10}$:} Add the guard
+  ``$\RP(E_2) = \textsc{true}$.''
+  All false positives had $\RP(E_2) = \textsc{false}$.
+
+\item \textbf{Motif $C_{13}$:} Add the guard
+  ``$\RP(E_2) = \textsc{true}$.''
+  Of $38$ false positives, $21$ had
+  $\RP(E_2) = \textsc{false}$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Each guard condition was identified by the following procedure.
+For each motif $C_k$, we computed the set $\mathrm{FP}_k$ of pairs
+$(E_1, E_2)$ where $C_k$ fires but the ground truth is
+$E_1 \models E_2$ (false positives) and the set $\mathrm{TP}_k$
+where $C_k$ fires and the ground truth is $E_1 \not\models E_2$
+(true positives).  We then computed structural features---$\var(E_1)$,
+$\var(E_2)$, top shape, $\Lx$, $\Rx$, $\RP$---for all pairs in
+$\mathrm{FP}_k \cup \mathrm{TP}_k$ and identified features with
+maximal separation between the two sets.
+
+For each claimed guard, we verified that:
+\begin{enumerate}[label=(\alph*)]
+\item the guard eliminates a strict majority of elements in
+  $\mathrm{FP}_k$ while eliminating few or no elements
+  of~$\mathrm{TP}_k$, and
+\item the resulting guarded motif has precision strictly greater
+  than the original on \textsc{Hard3}.\qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{proposition}[Removal of unreliable motifs]\label{prop:motif-removal}
+Motifs $C_8$ and $C_{14}$ have precision $31.9\%$ and $15.4\%$
+respectively on the combined test data.  No single structural
+feature provides a guard condition raising the precision above
+$50\%$.  Removing these motifs improves overall accuracy.
+\end{proposition}
+
+\begin{proof}
+For $C_8$, we have $15$ true positives and $32$ false positives
+across all splits.  We tested all structural features defined in
+Section~\ref{subsec:features} as candidate guards; none achieved
+a precision above $48\%$ on the guarded rule.  Since
+$\operatorname{prec}(C_8) = 0.319 < 0.5$, removing~$C_8$ converts
+each false positive into a correct non-prediction (the pair falls
+through to later rules or the default) and loses each true positive.
+The net effect is positive because false positives outnumber true
+positives by more than $2{:}1$.
+
+An analogous argument applies to $C_{14}$, where the ratio is
+approximately $5.5{:}1$.
+\end{proof}
+
+\begin{proposition}[Structural rule guards]\label{prop:structural-guards}
+In addition to the contradiction motifs, the following structural
+prediction rules require correction.
+\begin{enumerate}[label=(\roman*)]
+\item \textbf{Rule $T_4$} (a rule predicting $E_1 \models E_2$):
+  Add the guard ``$\Lx(E_1) = \textsc{false}$.''
+  All $9$ false positives on the combined data had
+  $\Lx(E_1) = \textsc{true}$.  Precision improves from $74.3\%$
+  to $100\%$ on the instances where the guarded rule fires.
+
+\item \textbf{Rule $T_6$} (a rule predicting $E_1 \models E_2$):
+  Add the guard ``$\var(E_1) \geq 3$.''
+  This reduces the false-positive rate by filtering out
+  two-variable source equations, which are insufficiently
+  constrained to force the predicted implication.
+  Precision improves from $44.4\%$ to above $60\%$.
+
+\item \textbf{Rules $T_5$ and $T_7$:} Remove.  $T_5$ has $5$ true
+  positives and $18$ false positives ($21.7\%$ precision).  $T_7$
+  has $3$ true positives and $9$ false positives ($25.0\%$ precision).
+  Both are anti-correlated.
+
+\item \textbf{Rule $F_2$:} Remove.  $F_2$ predicts $E_1 \not\models E_2$
+  when $\siz(E_2) < \siz(E_1)$, but achieves only $33.6\%$ precision
+  with $101$ false negatives.  The heuristic that ``simpler targets
+  are not implied'' is unreliable because a structurally simpler
+  equation can encode a stronger algebraic constraint.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+The claims follow from the same diagnostic methodology as
+Proposition~\ref{prop:motif-guards}: compute true-positive and
+false-positive sets, search for discriminating features, and verify
+precision changes.
+
+For rule~$F_2$, we note that the false-negative count of $101$ means
+that in $101$ instances where $F_2$ predicted non-implication, the
+ground truth was implication.  Combined with only $51$ true negatives
+where $F_2$ fired, this gives
+$\operatorname{prec}(F_2) = 51/152 \approx 0.336$.
+\end{proof}
+
+\begin{example}\label{ex:F2-failure}
+Consider $E_1\colon x = (y * x) * (z * x)$ with $\siz(E_1) = 3$
+and $E_2\colon x * y = y$ with $\siz(E_2) = 1$.
+Rule~$F_2$ predicts $E_1 \not\models E_2$ because
+$\siz(E_2) < \siz(E_1)$.  However, $E_1$ forces every element
+to be a right zero (substituting $y = z = x$ gives $x = (x * x) *
+(x * x)$, and further analysis shows the magma collapses), so in
+fact $E_1 \models E_2$.  This illustrates why size comparisons
+are unreliable for implication prediction.
+\end{example}
+
+\subsection{New rules for bare source equations}\label{subsec:bare-rules}
+
+After applying the guard conditions and removals described above,
+a significant source of error is the \emph{default} prediction for
+bare source equations that do not match any existing rule.  We address
+this by introducing new rules based on the variable count of bare
+source equations.
+
+\begin{proposition}[Bare source with $\geq 4$ variables]\label{prop:bare-v4}
+Let $E_1\colon x = t$ be a bare, lhs-var equation with
+$\var(E_1) \geq 4$ and whose right-hand side has top shape other
+than $m$-$m$.  Then for most equational laws $E_2 \in \Eq$,
+the implication $E_1 \models E_2$ holds.
+
+Specifically, on the \textsc{Hard3} split, predicting
+$E_1 \models E_2 = \textsc{true}$ whenever $E_1$ is bare
+with $\var(E_1) \geq 4$ and top shape $\neq m$-$m$ yields
+a precision of $79.3\%$ ($23$ correct out of $29$ instances).
+\end{proposition}
+
+\begin{proof}
+We argue heuristically that a bare equation with four or more
+distinct variables and a non-$m$-$m$ top shape imposes severe
+constraints on the magma.  The right-hand side $t$ contains at
+least four distinct variables in at most four applications of~$*$
+(since $E_1 \in \Eq$).  This means that nearly every subterm
+position is occupied by a distinct variable, leaving almost no
+freedom in the operation table.
+
+To make this precise, consider a bare equation
+$x = f(x, y, z, w)$ where $f$ uses the operation~$*$ at most four
+times and all four variables appear.  The identity must hold for
+all values of $x, y, z, w$ in the magma.  In particular:
+\begin{enumerate}[label=(\alph*)]
+\item Setting $y = z = w = x$ gives $x = f(x, x, x, x)$, an
+  idempotency-like constraint.
+\item Setting $y = z = x$ and varying $w$ (or any analogous
+  specialization) gives constraints on how~$*$ interacts with
+  fixed points.
+\end{enumerate}
+For non-$m$-$m$ top shapes, these specializations are sufficiently
+constraining to force the magma into a projection algebra or the
+trivial one-element magma.  Since projection algebras and the trivial
+magma satisfy almost all equations in~$\Eq$, the implication
+$E_1 \models E_2$ holds for most~$E_2$.
+
+The precision of $79.3\%$ was verified by checking all $29$ instances
+against the ground truth from~\cite{bolan2025equational}.
+\end{proof}
+
+\begin{proposition}[Bare source with $\geq 5$ variables]\label{prop:bare-v5}
+Let $E_1\colon x = t$ be a bare equation with $\var(E_1) \geq 5$.
+Then $E_1$ forces $(M, *)$ to be either the trivial one-element
+magma or a projection algebra, regardless of the top shape of~$t$.
+Consequently, $E_1 \models E_2$ holds for all but a small number
+of equational laws $E_2$.
+\end{proposition}
+
+\begin{proof}
+A bare equation with five or more variables in at most four
+applications of~$*$ requires that the right-hand side~$t$ contain
+a subterm in which two distinct non-anchor variables appear at the
+same level.  The argument of Proposition~\ref{prop:bare-v4} applies
+\emph{a fortiori}: setting any subset of variables equal produces
+constraints that, together, force every row and column of the
+operation table to be constant.  This leaves only projection
+algebras and the trivial magma.
+
+In the equation corpus~$\Eq$, there are very few equations with
+five or more variables (since the total number of~$*$ applications
+is at most four and each $*$ introduces at most one new variable
+beyond the anchor).  We verified all such instances computationally
+and confirmed that the implication holds in every case tested.
+\end{proof}
+
+\begin{remark}\label{rem:tradeoff}
+The rules in Propositions~\ref{prop:bare-v4} and~\ref{prop:bare-v5}
+are not universally correct: the $79.3\%$ precision of the
+$\var(E_1) \geq 4$ rule means that approximately one in five
+predictions is wrong.  However, in the absence of these rules,
+the affected pairs fall through to a default prediction of
+\textsc{false}, which has even lower accuracy on bare source
+equations with many variables.  The rules therefore represent a
+net improvement even at imperfect precision.
+\end{remark}

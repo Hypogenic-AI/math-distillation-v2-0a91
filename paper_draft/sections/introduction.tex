@@ -1,0 +1,85 @@
+\section{Introduction}\label{sec:intro}
+
+A \emph{magma} is a set equipped with a single binary operation, subject to
+no axioms.  Despite this minimality, the implication structure among
+equational laws on magmas is remarkably rich: of the $4694$ distinct
+equational laws with at most four applications of the binary
+operation~$*$, there are over $22$ million ordered pairs, and $37.12\%$
+of them are true implications~\cite{bolan2025equational}.
+
+The Equational Theories Project~\cite{bolan2025equational} settled the
+complete implication graph through a combination of automated theorem
+proving, finite counterexample search, and Lean~4 formalization.  Their
+work identified $1415$ equivalence classes and showed that only $524$
+finite magmas of order at most four suffice to refute $96.3\%$ of false
+implications.  More recently, Berlioz and Melli\`es~\cite{berlioz2026latent}
+introduced \emph{Stone pairings} $\langle E \mid A \rangle$, defined as
+the probability that a random variable assignment satisfies equation~$E$
+in a finite magma~$A$, and used principal component analysis of these
+pairings to reveal geometric structure in the space of equational
+theories.  In particular, they observed that implications tend to flow
+in a ``mainstream direction'' of increasing expectation and variance,
+and that hard implications are precisely those that violate this flow.
+
+The SAIR Mathematics Distillation Challenge~\cite{sair2026challenge}
+poses the equational implication problem in a knowledge-distillation
+setting: participants must compress their understanding of the
+implication graph into a text cheatsheet of at most $10$\,KB, which is
+then provided to a language model that must predict the truth value of
+each implication query.  This constraint demands that mathematical
+reasoning be encoded as explicit, human-readable rules rather than as
+opaque learned features.
+
+\subsection{Prior work and limitations}
+An initial rule-based predictor for this challenge achieved strong
+performance on routine instances but only $52.75\%$ accuracy on the
+hardest test split (denoted \textsc{Hard3}), barely exceeding the
+$51.25\%$ always-false baseline.  The predictor employed fourteen
+\emph{contradiction motifs}---syntactic patterns in the source and
+target equations intended to signal non-implication---together with
+structural rules based on variable counts, equation size, and
+term shape.  However, no systematic per-rule accuracy analysis had been
+performed, and several rules turned out to be anti-correlated with the
+ground truth on adversarial splits.
+
+\subsection{Contributions}
+In this paper, we undertake a systematic diagnostic analysis of
+structural prediction rules for equational implication.  Our
+contributions are as follows.
+\begin{itemize}[leftmargin=*,itemsep=2pt,topsep=2pt]
+\item We prove \emph{projection collapse lemmas}
+  (Theorem~\ref{thm:left-proj} and Theorem~\ref{thm:right-proj}),
+  showing that any magma satisfying $x = x*y$ is a left-projection
+  algebra and any magma satisfying $x = y*x$ is a right-projection
+  algebra.  We verify computationally that these are the only magmas
+  of order at most three satisfying these identities.
+
+\item We introduce a diagnostic framework that treats each prediction
+  rule as a binary classifier and measures its precision across
+  multiple test splits.  Using this framework, we identify rules with
+  accuracy below $35\%$ and either remove them or add necessary
+  guard conditions (Propositions~\ref{prop:motif-guards}
+  and~\ref{prop:structural-guards}).
+
+\item We formulate new implication rules for \emph{bare} source
+  equations with four or more distinct variables
+  (Proposition~\ref{prop:bare-v4}), proving that such equations
+  collapse the carrier set to at most one element under mild
+  structural hypotheses.
+
+\item We evaluate the refined rule set on four benchmark splits,
+  demonstrating an overall accuracy improvement from $69.8\%$ to
+  $79.1\%$ and a \textsc{Hard3} improvement from $52.75\%$ to $63.5\%$.
+\end{itemize}
+
+\subsection{Paper organization}
+Section~\ref{sec:prelim} establishes notation and recalls the necessary
+background on magmas and equational logic.  Section~\ref{sec:main}
+contains our main results: the projection collapse lemmas, the
+diagnostic framework, guard conditions for contradiction motifs,
+and the new bare-source rules.  Section~\ref{sec:discussion} analyzes
+the remaining error modes, discusses the hard2 regression, and connects
+our findings to the Stone pairing framework of
+Berlioz and Melli\`es~\cite{berlioz2026latent}.
+Section~\ref{sec:conclusion} summarizes our contributions and
+identifies directions for future work.

@@ -1,0 +1,1019 @@
+[
+  {
+    "id": "hard3_0002",
+    "eq1": "x = x * (x * y)",
+    "eq2": "x = (x * ((x * x) * x)) * x",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 9,
+    "eq2_id": 2441
+  },
+  {
+    "id": "hard3_0003",
+    "eq1": "x = y * (x * x)",
+    "eq2": "x = y * (z * (z * (w * x)))",
+    "actual": true,
+    "predicted_prob": 0.01,
+    "eq1_id": 13,
+    "eq2_id": 583
+  },
+  {
+    "id": "hard3_0014",
+    "eq1": "x = x * (y * (z * y))",
+    "eq2": "x = (((x * y) * z) * x) * y",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 59,
+    "eq2_id": 3086
+  },
+  {
+    "id": "hard3_0020",
+    "eq1": "x = y * (z * (z * x))",
+    "eq2": "x = (x * x) * (x * (y * x))",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 90,
+    "eq2_id": 1428
+  },
+  {
+    "id": "hard3_0022",
+    "eq1": "x = x * ((x * y) * z)",
+    "eq2": "x * y = x * ((y * x) * y)",
+    "actual": false,
+    "predicted_prob": 0.51,
+    "eq1_id": 103,
+    "eq2_id": 3519
+  },
+  {
+    "id": "hard3_0024",
+    "eq1": "x = x * ((y * z) * z)",
+    "eq2": "x = (x * (y * (z * y))) * x",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 112,
+    "eq2_id": 2277
+  },
+  {
+    "id": "hard3_0027",
+    "eq1": "x = y * ((z * x) * x)",
+    "eq2": "x = (y * y) * (x * x)",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 134,
+    "eq2_id": 176
+  },
+  {
+    "id": "hard3_0028",
+    "eq1": "x = y * ((z * x) * x)",
+    "eq2": "x = ((y * z) * w) * (z * x)",
+    "actual": true,
+    "predicted_prob": 0.21,
+    "eq1_id": 134,
+    "eq2_id": 2222
+  },
+  {
+    "id": "hard3_0034",
+    "eq1": "x = (y * y) * (x * x)",
+    "eq2": "x = y * ((x * (z * y)) * x)",
+    "actual": true,
+    "predicted_prob": 0.01,
+    "eq1_id": 176,
+    "eq2_id": 1096
+  },
+  {
+    "id": "hard3_0036",
+    "eq1": "x = (x * (x * x)) * y",
+    "eq2": "x = (x * x) * (x * (x * x))",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 204,
+    "eq2_id": 1426
+  },
+  {
+    "id": "hard3_0040",
+    "eq1": "x = (x * (y * z)) * y",
+    "eq2": "x = (((x * x) * x) * x) * x",
+    "actual": false,
+    "predicted_prob": 0.62,
+    "eq1_id": 215,
+    "eq2_id": 3050
+  },
+  {
+    "id": "hard3_0043",
+    "eq1": "x = ((x * x) * y) * z",
+    "eq2": "x = ((x * y) * (z * y)) * y",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 259,
+    "eq2_id": 2684
+  },
+  {
+    "id": "hard3_0046",
+    "eq1": "x = ((y * z) * y) * x",
+    "eq2": "x = (y * (x * (z * z))) * x",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 294,
+    "eq2_id": 2318
+  },
+  {
+    "id": "hard3_0048",
+    "eq1": "x = ((y * z) * z) * x",
+    "eq2": "x * (y * z) = (w * y) * z",
+    "actual": true,
+    "predicted_prob": 0.22,
+    "eq1_id": 298,
+    "eq2_id": 4564
+  },
+  {
+    "id": "hard3_0049",
+    "eq1": "x = ((y * z) * w) * x",
+    "eq2": "x = y * (z * (x * (w * x)))",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 302,
+    "eq2_id": 549
+  },
+  {
+    "id": "hard3_0065",
+    "eq1": "x = x * (y * (x * (x * z)))",
+    "eq2": "x * x = (x * x) * y",
+    "actual": false,
+    "predicted_prob": 0.51,
+    "eq1_id": 428,
+    "eq2_id": 360
+  },
+  {
+    "id": "hard3_0066",
+    "eq1": "x = x * (y * (x * (z * w)))",
+    "eq2": "x = (x * y) * ((z * w) * z)",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 435,
+    "eq2_id": 1678
+  },
+  {
+    "id": "hard3_0068",
+    "eq1": "x = x * (y * (z * (z * z)))",
+    "eq2": "x = x * ((y * (y * z)) * x)",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 456,
+    "eq2_id": 1051
+  },
+  {
+    "id": "hard3_0077",
+    "eq1": "x = y * (z * (y * (x * x)))",
+    "eq2": "x * y = (x * (z * x)) * y",
+    "actual": true,
+    "predicted_prob": 0.36,
+    "eq1_id": 554,
+    "eq2_id": 3935
+  },
+  {
+    "id": "hard3_0085",
+    "eq1": "x = x * (y * ((y * y) * z))",
+    "eq2": "x = (x * ((y * x) * z)) * x",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 644,
+    "eq2_id": 2462
+  },
+  {
+    "id": "hard3_0087",
+    "eq1": "x = x * (y * ((y * z) * w))",
+    "eq2": "x = (((x * y) * x) * x) * z",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 648,
+    "eq2_id": 3067
+  },
+  {
+    "id": "hard3_0106",
+    "eq1": "x = x * ((y * z) * (x * y))",
+    "eq2": "x = (x * y) * (y * y)",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 853,
+    "eq2_id": 160
+  },
+  {
+    "id": "hard3_0107",
+    "eq1": "x = x * ((y * z) * (y * w))",
+    "eq2": "x = ((x * (y * y)) * z) * x",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 859,
+    "eq2_id": 2878
+  },
+  {
+    "id": "hard3_0114",
+    "eq1": "x = y * ((y * y) * (z * x))",
+    "eq2": "x = (x * y) * (x * (y * x))",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 922,
+    "eq2_id": 1444
+  },
+  {
+    "id": "hard3_0115",
+    "eq1": "x = y * ((y * z) * (x * x))",
+    "eq2": "x = (y * x) * (z * (y * x))",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 926,
+    "eq2_id": 1502
+  },
+  {
+    "id": "hard3_0129",
+    "eq1": "x = x * ((x * (y * z)) * w)",
+    "eq2": "(x * y) * x = (x * y) * z",
+    "actual": false,
+    "predicted_prob": 0.51,
+    "eq1_id": 1034,
+    "eq2_id": 4630
+  },
+  {
+    "id": "hard3_0131",
+    "eq1": "x = x * ((y * (y * x)) * z)",
+    "eq2": "x = (x * y) * (z * (x * z))",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 1047,
+    "eq2_id": 1463
+  },
+  {
+    "id": "hard3_0134",
+    "eq1": "x = x * ((y * (z * x)) * z)",
+    "eq2": "x * y = x * (z * y)",
+    "actual": true,
+    "predicted_prob": 0.36,
+    "eq1_id": 1057,
+    "eq2_id": 329
+  },
+  {
+    "id": "hard3_0135",
+    "eq1": "x = x * ((y * (z * x)) * z)",
+    "eq2": "x = (x * y) * (y * (y * x))",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 1057,
+    "eq2_id": 1454
+  },
+  {
+    "id": "hard3_0137",
+    "eq1": "x = x * ((y * (z * z)) * z)",
+    "eq2": "x = (x * y) * ((x * y) * x)",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 1065,
+    "eq2_id": 1647
+  },
+  {
+    "id": "hard3_0139",
+    "eq1": "x = y * ((x * (x * x)) * x)",
+    "eq2": "x = x * ((y * y) * x)",
+    "actual": true,
+    "predicted_prob": 0.02,
+    "eq1_id": 1072,
+    "eq2_id": 107
+  },
+  {
+    "id": "hard3_0140",
+    "eq1": "x = y * ((x * (x * x)) * x)",
+    "eq2": "x = x * (((y * y) * y) * x)",
+    "actual": true,
+    "predicted_prob": 0.02,
+    "eq1_id": 1072,
+    "eq2_id": 1251
+  },
+  {
+    "id": "hard3_0142",
+    "eq1": "x = y * ((x * (z * x)) * x)",
+    "eq2": "x = (y * y) * (x * x)",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 1092,
+    "eq2_id": 176
+  },
+  {
+    "id": "hard3_0144",
+    "eq1": "x = y * ((y * (y * z)) * x)",
+    "eq2": "x = (y * (z * w)) * (y * x)",
+    "actual": true,
+    "predicted_prob": 0.21,
+    "eq1_id": 1125,
+    "eq2_id": 2014
+  },
+  {
+    "id": "hard3_0145",
+    "eq1": "x = y * ((z * (z * x)) * y)",
+    "eq2": "x = y * (((x * y) * y) * y)",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 1181,
+    "eq2_id": 1289
+  },
+  {
+    "id": "hard3_0147",
+    "eq1": "x = y * ((z * (w * w)) * x)",
+    "eq2": "x = x * ((y * (x * z)) * x)",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 1212,
+    "eq2_id": 1041
+  },
+  {
+    "id": "hard3_0151",
+    "eq1": "x = x * (((y * x) * y) * z)",
+    "eq2": "(x * x) * x = (x * x) * y",
+    "actual": false,
+    "predicted_prob": 0.51,
+    "eq1_id": 1243,
+    "eq2_id": 4583
+  },
+  {
+    "id": "hard3_0154",
+    "eq1": "x = y * (((x * x) * z) * x)",
+    "eq2": "x * y = z * (y * (x * y))",
+    "actual": true,
+    "predicted_prob": 0.36,
+    "eq1_id": 1281,
+    "eq2_id": 3397
+  },
+  {
+    "id": "hard3_0155",
+    "eq1": "x = y * (((x * x) * z) * x)",
+    "eq2": "x * y = z * (y * (w * y))",
+    "actual": true,
+    "predicted_prob": 0.22,
+    "eq1_id": 1281,
+    "eq2_id": 3409
+  },
+  {
+    "id": "hard3_0156",
+    "eq1": "x = y * (((y * x) * z) * x)",
+    "eq2": "x = ((x * y) * z) * (z * x)",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 1318,
+    "eq2_id": 2078
+  },
+  {
+    "id": "hard3_0157",
+    "eq1": "x = y * (((y * y) * z) * x)",
+    "eq2": "x = y * ((x * (x * z)) * x)",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 1328,
+    "eq2_id": 1078
+  },
+  {
+    "id": "hard3_0158",
+    "eq1": "x = y * (((y * z) * x) * x)",
+    "eq2": "x = y * ((z * (x * x)) * x)",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 1332,
+    "eq2_id": 1146
+  },
+  {
+    "id": "hard3_0159",
+    "eq1": "x = y * (((y * z) * z) * x)",
+    "eq2": "(x * y) * x = (y * x) * x",
+    "actual": false,
+    "predicted_prob": 0.51,
+    "eq1_id": 1340,
+    "eq2_id": 4635
+  },
+  {
+    "id": "hard3_0160",
+    "eq1": "x = (x * x) * (y * (x * z))",
+    "eq2": "(x * y) * x = (x * z) * x",
+    "actual": true,
+    "predicted_prob": 0.36,
+    "eq1_id": 1433,
+    "eq2_id": 4631
+  },
+  {
+    "id": "hard3_0162",
+    "eq1": "x = (x * y) * (z * (x * y))",
+    "eq2": "x * y = ((x * y) * z) * z",
+    "actual": true,
+    "predicted_prob": 0.36,
+    "eq1_id": 1462,
+    "eq2_id": 4135
+  },
+  {
+    "id": "hard3_0165",
+    "eq1": "x = (y * x) * (x * (z * w))",
+    "eq2": "x = (y * (y * y)) * y",
+    "actual": false,
+    "predicted_prob": 0.61,
+    "eq1_id": 1487,
+    "eq2_id": 232
+  },
+  {
+    "id": "hard3_0167",
+    "eq1": "x = (y * x) * (x * (z * w))",
+    "eq2": "x * y = z * (x * (z * z))",
+    "actual": false,
+    "predicted_prob": 0.51,
+    "eq1_id": 1487,
+    "eq2_id": 3389
+  },
+  {
+    "id": "hard3_0175",
+    "eq1": "x = (y * z) * (x * (z * x))",
+    "eq2": "x * y = ((x * x) * y) * y",
+    "actual": false,
+    "predicted_prob": 0.51,
+    "eq1_id": 1560,
+    "eq2_id": 4121
+  },
+  {
+    "id": "hard3_0176",
+    "eq1": "x = (y * z) * (y * (x * z))",
+    "eq2": "x = (y * ((y * y) * x)) * y",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 1571,
+    "eq2_id": 2541
+  },
+  {
+    "id": "hard3_0183",
+    "eq1": "x = (x * x) * ((y * z) * z)",
+    "eq2": "x = (x * x) * (y * (x * y))",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 1642,
+    "eq2_id": 1432
+  },
+  {
+    "id": "hard3_0187",
+    "eq1": "x = (x * y) * ((z * y) * y)",
+    "eq2": "x = (x * y) * (z * (z * w))",
+    "actual": true,
+    "predicted_prob": 0.21,
+    "eq1_id": 1669,
+    "eq2_id": 1472
+  },
+  {
+    "id": "hard3_0192",
+    "eq1": "x = (y * x) * ((y * y) * y)",
+    "eq2": "x = y * (x * ((y * y) * y))",
+    "actual": true,
+    "predicted_prob": 0.02,
+    "eq1_id": 1695,
+    "eq2_id": 680
+  },
+  {
+    "id": "hard3_0193",
+    "eq1": "x = (y * x) * ((y * z) * z)",
+    "eq2": "x = y * ((x * (x * y)) * x)",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 1699,
+    "eq2_id": 1075
+  },
+  {
+    "id": "hard3_0194",
+    "eq1": "x = (y * x) * ((z * z) * x)",
+    "eq2": "x = (y * (y * z)) * (x * x)",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 1709,
+    "eq2_id": 1941
+  },
+  {
+    "id": "hard3_0196",
+    "eq1": "x = (y * z) * ((w * x) * x)",
+    "eq2": "x = y * (z * (x * (z * x)))",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 1806,
+    "eq2_id": 545
+  },
+  {
+    "id": "hard3_0199",
+    "eq1": "x = (x * (x * y)) * (z * y)",
+    "eq2": "x = (x * ((x * y) * x)) * z",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 1844,
+    "eq2_id": 2448
+  },
+  {
+    "id": "hard3_0204",
+    "eq1": "x = (y * (x * x)) * (z * x)",
+    "eq2": "x = y * (((x * z) * z) * x)",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 1890,
+    "eq2_id": 1303
+  },
+  {
+    "id": "hard3_0205",
+    "eq1": "x = (y * (x * x)) * (z * x)",
+    "eq2": "x * x = (x * (y * z)) * x",
+    "actual": true,
+    "predicted_prob": 0.36,
+    "eq1_id": 1890,
+    "eq2_id": 3873
+  },
+  {
+    "id": "hard3_0207",
+    "eq1": "x = (y * (y * z)) * (x * z)",
+    "eq2": "x * y = (z * (z * x)) * y",
+    "actual": true,
+    "predicted_prob": 0.36,
+    "eq1_id": 1943,
+    "eq2_id": 4023
+  },
+  {
+    "id": "hard3_0208",
+    "eq1": "x = (y * (z * x)) * (y * x)",
+    "eq2": "x * y = ((y * z) * x) * y",
+    "actual": true,
+    "predicted_prob": 0.36,
+    "eq1_id": 1962,
+    "eq2_id": 4175
+  },
+  {
+    "id": "hard3_0209",
+    "eq1": "x = (y * (z * x)) * (z * x)",
+    "eq2": "x = ((y * z) * z) * (w * x)",
+    "actual": true,
+    "predicted_prob": 0.21,
+    "eq1_id": 1966,
+    "eq2_id": 2207
+  },
+  {
+    "id": "hard3_0214",
+    "eq1": "x = ((x * x) * y) * (x * z)",
+    "eq2": "x = ((x * y) * (z * w)) * y",
+    "actual": true,
+    "predicted_prob": 0.21,
+    "eq1_id": 2042,
+    "eq2_id": 2692
+  },
+  {
+    "id": "hard3_0221",
+    "eq1": "x = ((x * y) * z) * (y * y)",
+    "eq2": "x = ((x * (y * y)) * x) * x",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 2075,
+    "eq2_id": 2872
+  },
+  {
+    "id": "hard3_0230",
+    "eq1": "x = ((y * x) * y) * (z * x)",
+    "eq2": "x * y = ((y * z) * w) * y",
+    "actual": true,
+    "predicted_prob": 0.22,
+    "eq1_id": 2103,
+    "eq2_id": 4187
+  },
+  {
+    "id": "hard3_0231",
+    "eq1": "x = ((y * x) * y) * (z * z)",
+    "eq2": "x = (y * (x * (y * x))) * x",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 2105,
+    "eq2_id": 2300
+  },
+  {
+    "id": "hard3_0232",
+    "eq1": "x = ((y * x) * z) * (y * z)",
+    "eq2": "x * y = x * ((z * z) * y)",
+    "actual": true,
+    "predicted_prob": 0.36,
+    "eq1_id": 2113,
+    "eq2_id": 3537
+  },
+  {
+    "id": "hard3_0238",
+    "eq1": "x = ((y * y) * z) * (x * x)",
+    "eq2": "x = (y * y) * ((y * z) * x)",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 2144,
+    "eq2_id": 1734
+  },
+  {
+    "id": "hard3_0241",
+    "eq1": "x = ((y * z) * x) * (x * w)",
+    "eq2": "x = (x * x) * ((y * x) * x)",
+    "actual": false,
+    "predicted_prob": 0.62,
+    "eq1_id": 2164,
+    "eq2_id": 1634
+  },
+  {
+    "id": "hard3_0242",
+    "eq1": "x = ((y * z) * x) * (x * w)",
+    "eq2": "x = ((x * x) * y) * (y * y)",
+    "actual": false,
+    "predicted_prob": 0.62,
+    "eq1_id": 2164,
+    "eq2_id": 2044
+  },
+  {
+    "id": "hard3_0243",
+    "eq1": "x = ((y * z) * x) * (w * x)",
+    "eq2": "x = (y * (z * w)) * (y * x)",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 2173,
+    "eq2_id": 2014
+  },
+  {
+    "id": "hard3_0247",
+    "eq1": "x = (x * (y * (x * x))) * z",
+    "eq2": "x = (x * ((y * z) * z)) * w",
+    "actual": true,
+    "predicted_prob": 0.21,
+    "eq1_id": 2255,
+    "eq2_id": 2487
+  },
+  {
+    "id": "hard3_0250",
+    "eq1": "x = (x * (y * (y * x))) * z",
+    "eq2": "x * y = x * (z * (w * x))",
+    "actual": true,
+    "predicted_prob": 0.22,
+    "eq1_id": 2265,
+    "eq2_id": 3337
+  },
+  {
+    "id": "hard3_0251",
+    "eq1": "x = (x * (y * (y * y))) * z",
+    "eq2": "x = (x * (y * x)) * (y * y)",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 2268,
+    "eq2_id": 1851
+  },
+  {
+    "id": "hard3_0252",
+    "eq1": "x = (x * (y * (y * y))) * z",
+    "eq2": "x = (x * (y * y)) * (z * w)",
+    "actual": true,
+    "predicted_prob": 0.21,
+    "eq1_id": 2268,
+    "eq2_id": 1866
+  },
+  {
+    "id": "hard3_0258",
+    "eq1": "x = (x * ((x * y) * y)) * z",
+    "eq2": "x = (x * (x * (x * y))) * x",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 2451,
+    "eq2_id": 2240
+  },
+  {
+    "id": "hard3_0259",
+    "eq1": "x = (x * ((y * x) * z)) * z",
+    "eq2": "x = (x * (y * (z * x))) * x",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 2464,
+    "eq2_id": 2273
+  },
+  {
+    "id": "hard3_0260",
+    "eq1": "x = (x * ((y * z) * x)) * z",
+    "eq2": "x = (x * (y * (z * w))) * z",
+    "actual": true,
+    "predicted_prob": 0.21,
+    "eq1_id": 2478,
+    "eq2_id": 2287
+  },
+  {
+    "id": "hard3_0261",
+    "eq1": "x = (x * ((y * z) * y)) * w",
+    "eq2": "x = (x * y) * (z * (x * x))",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 2483,
+    "eq2_id": 1461
+  },
+  {
+    "id": "hard3_0266",
+    "eq1": "x = (y * ((x * z) * z)) * x",
+    "eq2": "x = (x * (y * z)) * (w * x)",
+    "actual": true,
+    "predicted_prob": 0.21,
+    "eq1_id": 2521,
+    "eq2_id": 1879
+  },
+  {
+    "id": "hard3_0271",
+    "eq1": "x = (y * ((z * x) * z)) * x",
+    "eq2": "x = ((y * z) * w) * (w * x)",
+    "actual": true,
+    "predicted_prob": 0.21,
+    "eq1_id": 2575,
+    "eq2_id": 2227
+  },
+  {
+    "id": "hard3_0272",
+    "eq1": "x = (y * ((z * x) * w)) * x",
+    "eq2": "x = ((x * (y * z)) * x) * x",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 2579,
+    "eq2_id": 2882
+  },
+  {
+    "id": "hard3_0278",
+    "eq1": "x = ((x * y) * (x * x)) * z",
+    "eq2": "x * y = x * (z * w)",
+    "actual": true,
+    "predicted_prob": 0.22,
+    "eq1_id": 2661,
+    "eq2_id": 331
+  },
+  {
+    "id": "hard3_0283",
+    "eq1": "x = ((x * y) * (y * z)) * w",
+    "eq2": "x = ((x * x) * x) * (y * z)",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 2678,
+    "eq2_id": 2039
+  },
+  {
+    "id": "hard3_0288",
+    "eq1": "x = ((x * y) * (z * z)) * w",
+    "eq2": "x = ((x * (y * x)) * z) * z",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 2690,
+    "eq2_id": 2870
+  },
+  {
+    "id": "hard3_0291",
+    "eq1": "x = ((y * x) * (z * w)) * x",
+    "eq2": "x * (y * y) = z * (w * y)",
+    "actual": true,
+    "predicted_prob": 0.36,
+    "eq1_id": 2728,
+    "eq2_id": 4354
+  },
+  {
+    "id": "hard3_0292",
+    "eq1": "x = ((y * y) * (z * y)) * x",
+    "eq2": "x = x * ((y * x) * (y * x))",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 2757,
+    "eq2_id": 835
+  },
+  {
+    "id": "hard3_0294",
+    "eq1": "x = ((y * z) * (y * x)) * x",
+    "eq2": "x = ((y * (z * z)) * x) * x",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 2787,
+    "eq2_id": 3007
+  },
+  {
+    "id": "hard3_0295",
+    "eq1": "x = ((y * z) * (z * w)) * x",
+    "eq2": "x = (y * (y * z)) * (w * x)",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 2816,
+    "eq2_id": 1953
+  },
+  {
+    "id": "hard3_0296",
+    "eq1": "x = ((y * z) * (z * w)) * x",
+    "eq2": "x = (((y * z) * y) * y) * x",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 2816,
+    "eq2_id": 3197
+  },
+  {
+    "id": "hard3_0307",
+    "eq1": "x = ((x * (y * y)) * x) * z",
+    "eq2": "x = ((x * (x * y)) * y) * z",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 2874,
+    "eq2_id": 2857
+  },
+  {
+    "id": "hard3_0308",
+    "eq1": "x = ((x * (y * z)) * x) * z",
+    "eq2": "x = ((x * x) * y) * (y * z)",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 2884,
+    "eq2_id": 2045
+  },
+  {
+    "id": "hard3_0313",
+    "eq1": "x = ((y * (x * x)) * z) * x",
+    "eq2": "x * (y * z) = (w * y) * z",
+    "actual": true,
+    "predicted_prob": 0.22,
+    "eq1_id": 2905,
+    "eq2_id": 4564
+  },
+  {
+    "id": "hard3_0314",
+    "eq1": "x = ((y * (x * z)) * y) * x",
+    "eq2": "x = (y * z) * (w * (u * x))",
+    "actual": true,
+    "predicted_prob": 0.1,
+    "eq1_id": 2923,
+    "eq2_id": 1623
+  },
+  {
+    "id": "hard3_0315",
+    "eq1": "x = ((y * (x * z)) * z) * x",
+    "eq2": "x = y * (z * ((y * z) * x))",
+    "actual": true,
+    "predicted_prob": 0.34,
+    "eq1_id": 2927,
+    "eq2_id": 765
+  },
+  {
+    "id": "hard3_0317",
+    "eq1": "x = ((y * (x * z)) * z) * x",
+    "eq2": "(x * x) * y = (y * z) * y",
+    "actual": true,
+    "predicted_prob": 0.36,
+    "eq1_id": 2927,
+    "eq2_id": 4611
+  },
+  {
+    "id": "hard3_0318",
+    "eq1": "x = ((y * (x * z)) * w) * x",
+    "eq2": "x = (x * ((y * z) * z)) * x",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 2931,
+    "eq2_id": 2484
+  },
+  {
+    "id": "hard3_0321",
+    "eq1": "x = ((y * (z * x)) * w) * x",
+    "eq2": "x = y * (((z * y) * z) * x)",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 2985,
+    "eq2_id": 1374
+  },
+  {
+    "id": "hard3_0322",
+    "eq1": "x = ((y * (z * y)) * z) * x",
+    "eq2": "x * x = (x * (y * y)) * x",
+    "actual": false,
+    "predicted_prob": 0.51,
+    "eq1_id": 2998,
+    "eq2_id": 3870
+  },
+  {
+    "id": "hard3_0331",
+    "eq1": "x = (((x * y) * z) * y) * w",
+    "eq2": "x = (((x * y) * y) * z) * x",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 3092,
+    "eq2_id": 3081
+  },
+  {
+    "id": "hard3_0333",
+    "eq1": "x = (((y * x) * y) * z) * x",
+    "eq2": "x * (y * z) = (y * x) * z",
+    "actual": true,
+    "predicted_prob": 0.36,
+    "eq1_id": 3118,
+    "eq2_id": 4525
+  },
+  {
+    "id": "hard3_0334",
+    "eq1": "x = (((y * x) * z) * z) * x",
+    "eq2": "x = (y * (y * y)) * x",
+    "actual": true,
+    "predicted_prob": 0.5,
+    "eq1_id": 3130,
+    "eq2_id": 231
+  },
+  {
+    "id": "hard3_0335",
+    "eq1": "x = (((y * x) * z) * z) * x",
+    "eq2": "x = ((y * x) * z) * (w * x)",
+    "actual": true,
+    "predicted_prob": 0.21,
+    "eq1_id": 3130,
+    "eq2_id": 2119
+  },
+  {
+    "id": "hard3_0345",
+    "eq1": "x * x = y * (x * (z * w))",
+    "eq2": "x * (y * x) = x * (y * y)",
+    "actual": false,
+    "predicted_prob": 0.55,
+    "eq1_id": 3277,
+    "eq2_id": 4314
+  },
+  {
+    "id": "hard3_0350",
+    "eq1": "x * x = y * (z * (x * w))",
+    "eq2": "x * (y * y) = (y * x) * y",
+    "actual": false,
+    "predicted_prob": 0.55,
+    "eq1_id": 3291,
+    "eq2_id": 4480
+  },
+  {
+    "id": "hard3_0353",
+    "eq1": "x * y = y * (x * (z * y))",
+    "eq2": "(x * y) * z = (y * w) * z",
+    "actual": true,
+    "predicted_prob": 0.18,
+    "eq1_id": 3349,
+    "eq2_id": 4682
+  },
+  {
+    "id": "hard3_0376",
+    "eq1": "x * y = (z * x) * (y * z)",
+    "eq2": "x * (x * y) = x * (y * x)",
+    "actual": true,
+    "predicted_prob": 0.43,
+    "eq1_id": 3791,
+    "eq2_id": 4283
+  },
+  {
+    "id": "hard3_0380",
+    "eq1": "x * x = (y * (y * x)) * z",
+    "eq2": "x * (x * x) = x * (y * y)",
+    "actual": true,
+    "predicted_prob": 0.43,
+    "eq1_id": 3889,
+    "eq2_id": 4270
+  },
+  {
+    "id": "hard3_0384",
+    "eq1": "x * x = ((y * x) * z) * z",
+    "eq2": "x * x = (y * z) * (y * z)",
+    "actual": true,
+    "predicted_prob": 0.3,
+    "eq1_id": 4088,
+    "eq2_id": 3700
+  },
+  {
+    "id": "hard3_0392",
+    "eq1": "x * (x * y) = (x * z) * w",
+    "eq2": "x * (y * x) = (x * x) * y",
+    "actual": false,
+    "predicted_prob": 0.55,
+    "eq1_id": 4404,
+    "eq2_id": 4433
+  },
+  {
+    "id": "hard3_0393",
+    "eq1": "x * (x * y) = (y * z) * w",
+    "eq2": "(x * x) * y = (z * z) * w",
+    "actual": true,
+    "predicted_prob": 0.3,
+    "eq1_id": 4414,
+    "eq2_id": 4623
+  },
+  {
+    "id": "hard3_0395",
+    "eq1": "x * (y * z) = (z * y) * y",
+    "eq2": "x * (x * x) = y * (z * y)",
+    "actual": true,
+    "predicted_prob": 0.3,
+    "eq1_id": 4545,
+    "eq2_id": 4279
+  },
+  {
+    "id": "hard3_0396",
+    "eq1": "x * (y * z) = (w * x) * y",
+    "eq2": "x * (y * z) = (x * w) * y",
+    "actual": true,
+    "predicted_prob": 0.3,
+    "eq1_id": 4558,
+    "eq2_id": 4519
+  },
+  {
+    "id": "hard3_0397",
+    "eq1": "x * (y * z) = (w * w) * y",
+    "eq2": "x * (x * y) = z * (y * w)",
+    "actual": true,
+    "predicted_prob": 0.3,
+    "eq1_id": 4573,
+    "eq2_id": 4306
+  }
+]

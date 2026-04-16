@@ -1,0 +1,595 @@
+You are an academic paper writer for mathematics. Generate a complete AMS-style
+paper based on the mathematical results provided.
+
+════════════════════════════════════════════════════════════════════════════════
+                         IMPORTANT: BEFORE YOU START
+════════════════════════════════════════════════════════════════════════════════
+
+Before writing any content, you MUST complete these steps:
+
+1. READ THE SKILL: Review the paper-writer skill at .claude/skills/paper-writer/SKILL.md
+2. READ THE STYLE GUIDE: Study templates/paper_writing/lab_style_guide.md carefully
+3. REVIEW AMS SAMPLE: Skim paper_draft/example_paper.tex for LaTeX formatting
+   conventions ONLY — it is the official AMS journal sample file that demonstrates
+   how to use amsart theorem environments, equation formatting, list types,
+   bibliography style, and document structure. It is NOT a real paper and its
+   "content" is purely illustrative (placeholder lemmas, dummy proofs, etc.).
+   Do NOT imitate its content or narrative structure.
+4. REVIEW LANGUAGE STYLE: Browse paper_examples/ for language and exposition patterns
+5. VERIFY COMMAND TEMPLATES: Command templates (math.tex, general.tex, macros.tex)
+   are pre-copied to paper_draft/commands/
+
+CRITICAL: The AMS sample file is a LaTeX formatting reference, not a content template.
+Use it to learn \documentclass{amsart} conventions (theorem/proof environments,
+\bibliographystyle{amsplain}, author/address blocks). Write your own content
+based on the research report below.
+
+════════════════════════════════════════════════════════════════════════════════
+                            RESEARCH REPORT
+════════════════════════════════════════════════════════════════════════════════
+
+# Mathematics Distillation Challenge v2: Improving Hard3 Performance
+
+## 1. Executive Summary
+
+We systematically evaluated and improved a rule-based cheatsheet for the SAIR Mathematics Distillation Challenge, which determines whether one equational law implies another over all magmas. Through error diagnosis and targeted rule fixes, we improved hard3 accuracy from **52.75% to 63.5%** (+10.75 pp) while also improving normal accuracy from **71.0% to 82.4%** and hard1 from **65.2% to 73.9%**. The hard2 split saw a regression from 99.5% to 95.5%. Overall accuracy improved from 69.8% to 79.1%.
+
+## 2. Research Question &amp; Motivation
+
+The existing cheatsheet achieved strong performance on easier splits but only 52.75% accuracy on hard3 — barely above the always-FALSE baseline of 51.25%. The goal was to diagnose failure modes and fix/add rules to significantly improve hard3 performance while maintaining performance on other splits.
+
+## 3. Methodology
+
+### Approach
+1. **Implemented** all cheatsheet rules as a Python program for rapid evaluation
+2. **Evaluated** on all 4 SAIR competition splits (normal: 1000, hard1: 69, hard2: 200, hard3: 400)
+3. **Diagnosed** per-rule accuracy across all datasets to identify problematic rules
+4. **Analyzed** distinguishing features between true positives and false positives for each rule
+5. **Verified** new collapse lemmas mathematically using exhaustive magma enumeration
+6. **Iterated** through 7 versions, testing each change against all splits
+
+### Tools
+- Python 3.12 for rule implementation and evaluation
+- Exhaustive magma search (all size-2 and size-3 magmas) for verification
+- Previous repo&#39;s computational predictor for ground truth comparison
+
+## 4. Results
+
+### Accuracy Comparison
+
+| Split  | Baseline | Improved | Delta    | Notes                        |
+|--------|----------|----------|----------|------------------------------|
+| normal | 71.0%    | 82.4%    | **+11.4** | Strong improvement          |
+| hard1  | 65.2%    | 73.9%    | **+8.7**  | Strong improvement          |
+| hard2  | 99.5%    | 95.5%    | -4.0      | Regression from rule removal |
+| hard3  | 52.75%   | 63.5%    | **+10.75**| Primary target improved     |
+| **Overall** | **69.8%** | **79.1%** | **+9.3** | |
+
+### Key Changes and Their Impact
+
+#### 1. Added Simple Projection Collapse Lemmas
+- `x = x * y` → LEFT PROJECTION (forces `p*q = p`)
+- `x = y * x` → RIGHT PROJECTION (forces `p*q = q`)
+- **Verified**: exhaustive enumeration of all magmas up to size 3 confirms these are the ONLY magmas satisfying these equations
+- **Impact**: Catches previously unhandled bare source equations with 2 variables
+
+#### 2. Fixed Inaccurate Contradiction Motifs
+The original cheatsheet had 14 contradiction motifs (C1-C14). Several had very low accuracy:
+
+| Motif | Original Accuracy | Action | Key Fix |
+|-------|------------------|--------|---------|
+| C1    | 96.8% overall, 0% on hard3 | Added `topShape ≠ m-m` | All hard3 FPs had m-m shape |
+| C3    | 56.2% | Added `rhsVars ≥ 3` | All FPs had vA=2 |
+| C6    | 57.4% | Added `Rx(A)=FALSE` | All 20 FPs had Rx=TRUE |
+| C7    | 100% | Unchanged | Perfect accuracy |
+| C8    | **31.9%** | **Removed** | No clean discriminating feature |
+| C9    | **28.0%** | Added 3 conditions | XOR_B, square, imb filters |
+| C10   | 56.5% | Added `RP(B)=TRUE` | All FPs had RP_B=FALSE |
+| C13   | 56.8% | Added `RP(B)=TRUE` | 21 of 38 FPs had RP_B=FALSE |
+| C14   | **15.4%** | **Removed** | Hopelessly unreliable |
+
+#### 3. Fixed Structural Rules
+| Rule | Original Accuracy | Action | Reason |
+|------|------------------|--------|--------|
+| T4   | 74.3% | Added `Lx(A)=FALSE` | All 9 FPs had Lx=TRUE |
+| T5   | **21.7%** | **Removed** | 5 TP vs 18 FP |
+| T7   | **25.0%** | **Removed** | 3 TP vs 9 FP |
+| F2   | **33.6%** | **Removed** | Worse than random (101 FN!) |
+| T6   | 44.4% | Added `vA ≥ 3` | Reduce FPs |
+
+#### 4. Added New Late-Stage Rules
+- **NR_bare_v4**: `bare(A)` and `vA ≥ 4` and `topShape ≠ m-m` → TRUE
+  - Rationale: bare equations with 4+ variables almost always trivialize the magma
+  - On hard3: 29 fires, 23 correct (79.3%)
+- **NR_bare_v5**: `bare(A)` and `vA ≥ 5` → TRUE (any topShape)
+  - Rationale: 5+ variable bare equations always trivialize
+
+## 5. Analysis &amp; Discussion
+
+### Error Analysis on Hard3
+
+The remaining 146 errors on hard3 break down as:
+- **D4 default FN (36)**: Cases falling through all rules; mainly bare(A) with vA=2-3 and non-bare sources
+- **F1 FN (32)**: Cases where vB=vA but implication holds; requires deeper algebraic analysis
+- **C13/C10 FP (31)**: Contradiction motifs still fire incorrectly for some equations
+- **F3 FN (10)**: Cases where sB &lt; sA but implication holds
+
+### Why Hard2 Regressed
+The hard2 split was designed so structural rules correctly classify most cases. Removing inaccurate rules (C8, C14, T5, T7) that happened to be correct on hard2 caused 9 false negatives. This is an inherent tension: hard3 was designed to defeat exactly the rules that hard2 relies on.
+
+### Comparison with Computational Predictor
+The previous iteration&#39;s computational predictor (BFS rewriting + counterexample search) achieves 72% on hard3 vs our rule-based 63.5%. The 8.5 pp gap comes from cases requiring algebraic reasoning beyond structural features, particularly:
+- Non-bare source equations with absorbing variables
+- Bare sources with vA=3 that trivialize through complex rewrite chains
+- Cases requiring counterexample construction
+
+### Log-Loss Improvement
+Average log-loss improved on all splits except hard2:
+- normal: -1.343 → -0.819 (39% reduction)
+- hard1: -1.608 → -1.209 (25% reduction)  
+- hard2: -0.033 → -0.217 (regression)
+- hard3: -2.181 → -1.687 (23% reduction)
+
+## 6. Limitations
+
+1. **Hard2 regression (-4 pp)**: Unavoidable trade-off when fixing rules that hard3 exploits but hard2 depends on
+2. **Cheatsheet is rule-based**: Cannot capture all algebraic implications; limited to structural features
+3. **LLM execution gap**: The Python implementation is a proxy; actual LLM performance may differ due to rule-following errors
+4. **F1 bottleneck**: 32 FN from `vB=vA → FALSE`; fixing this without regression is difficult as same-variable-count implications require case-by-case algebraic analysis
+
+## 7. Conclusions &amp; Next Steps
+
+### Key Results
+- Hard3 accuracy improved by **+10.75 pp** (52.75% → 63.5%)
+- Overall accuracy improved by **+9.3 pp** (69.8% → 79.1%)
+- Cheatsheet size: 7.8KB (well under 10KB limit)
+- Most impactful changes: removing F2 (33.6% accuracy), adding NR_bare_v4, fixing motifs C1/C6/C8/C14
+
+### Recommended Next Steps
+1. **Add more collapse lemma patterns**: Systematically identify all equations that force left/right projection
+2. **Algebraic rewriting rules**: Add simple rewriting chains (e.g., detecting idempotent laws)
+3. **Hybrid approach**: Use a small counterexample table (all 16 size-2 magmas) as a verification step
+4. **Fine-tune for log-loss**: Output confidence levels instead of binary TRUE/FALSE
+
+## References
+- SAIR Mathematics Distillation Challenge Stage 1
+- Previous iteration workspace: math-distillation-d448-claude
+- Equational theories project (Lean formalization)
+
+
+════════════════════════════════════════════════════════════════════════════════
+                            RESEARCH PLAN
+════════════════════════════════════════════════════════════════════════════════
+
+# Research Plan: Mathematics Distillation Challenge v2
+
+## Motivation &amp; Novelty Assessment
+
+### Why This Research Matters
+The SAIR Mathematics Distillation Challenge tests whether mathematical reasoning can be compressed into a cheatsheet that helps an LLM solve equational implication problems. Improving hard3 accuracy directly impacts competition performance and demonstrates that systematic error analysis can improve rule-based mathematical reasoning systems.
+
+### Gap in Existing Work
+The previous iteration achieved ~90% on easy cases but only ~52.75% on hard3 (barely above the ~51.25% always-FALSE baseline). The rules were developed based on random samples and not stress-tested against adversarial cases.
+
+### Our Novel Contribution
+Systematic per-rule accuracy analysis across all difficulty splits, identifying and fixing rules with accuracy below 35% (essentially anti-correlated with truth). Key finding: several contradiction motifs and structural rules were worse than random on hard cases.
+
+### Experiment Justification
+- Experiment 1 (Evaluate baseline): Establishes ground truth per-rule accuracy across all splits
+- Experiment 2 (Diagnose errors): Identifies specific features distinguishing TP from FP for each rule
+- Experiment 3 (Fix rules): Targeted surgical fixes based on empirical evidence
+- Experiment 4 (Add rules): New rules for uncovered cases (collapse lemmas, bare source v4+)
+
+## Research Question
+Can systematic error diagnosis and targeted rule improvements significantly improve hard3 accuracy on the SAIR equational implication task while maintaining performance on easier splits?
+
+## Methodology
+1. Implement cheatsheet as Python predictor
+2. Evaluate on all 4 splits
+3. Compute per-rule accuracy
+4. For each problematic rule, find distinguishing features between TP and FP
+5. Apply surgical fixes and test iteratively
+
+## Success Criteria
+- Hard3 accuracy &gt; baseline 52.75% ✓ (achieved 63.5%)
+- No severe regressions on other splits ✓ (normal +11.4, hard1 +8.7, hard2 -4.0)
+- Cheatsheet under 10KB ✓ (7.8KB)
+
+
+════════════════════════════════════════════════════════════════════════════════
+                          LITERATURE REVIEW
+════════════════════════════════════════════════════════════════════════════════
+
+# Literature Review: Improving Hard3 Performance in the Mathematics Distillation Challenge
+
+## Research Area Overview
+
+The Mathematics Distillation Challenge (Tao &amp; Davis, SAIR Foundation, 2026) asks participants to compress the implication structure of 4694 equational laws on magmas into a &lt;10KB text cheatsheet that enables weak LLMs to predict whether equation E1 implies equation E2. The previous iteration achieved 87.4% on normal, 63.8% on hard1, 54.5% on hard2, and **71.8% on hard3**. This review focuses on diagnosing hard3 failure modes and identifying new techniques to improve performance.
+
+## Key Definitions
+
+**Magma.** A set M with a binary operation `*: M x M -&gt; M`. No axioms required.
+
+**Equational law.** An identity like `x * (y * z) = (x * y) * z` (associativity). The 4694 laws in the challenge have at most 4 occurrences of `*`.
+
+**Implication (E1 |= E2).** Every magma satisfying E1 also satisfies E2. Of 22M pairs, 37.12% are true implications.
+
+**Equation forms** (from v1 predictor):
+- **Trivial:** `x = x`
+- **Singleton:** `x = y` (forces all elements equal)
+- **Absorbing:** `x = f(y,z,...)` where x doesn&#39;t appear in f (forces all elements equal)
+- **Standard (lhs_var):** `x = f(x,y,...)` where x appears on both sides
+- **General:** Both sides contain `*` operations
+
+**Signature (a,b).** Number of `*` operations on left-hand side (a) and right-hand side (b).
+
+**Conjugacy/Duality.** Swapping `x*y` with `y*x` maps laws to their conjugates. Conjugate theories have identical Stone spectra.
+
+**Stone pairing** (Berlioz &amp; Mellies, 2026). For equation E and finite magma A, `&lt;E|A&gt;` = probability that a random variable assignment satisfies E in A. Values in [0,1].
+
+## Key Papers
+
+### Paper 1: The Equational Theories Project (Bolan et al., 2025)
+- **arXiv:** 2512.07087
+- **Main Results:** Complete determination of all 22,033,636 implications. 8,178,279 (37.12%) true. 1415 equivalence classes. A CNN achieves 99.7% accuracy. Only 524 distinct finite magmas (size &lt;=4) needed to refute 96.3% of false implications.
+- **Key Techniques for Our Work:**
+  1. Finite magma counterexamples refute most false implications
+  2. Syntactic rewriting generates direct implications
+  3. Variable multiplicities and modular arithmetic detect non-implications
+  4. ATPs (Vampire, Prover9) establish hard implications via superposition
+  5. Canonizers map equivalent terms to normal forms
+  6. Linear/quadratic magma constructions: `x*y = ax+by mod n`
+- **Relevance:** The techniques catalog defines what can be encoded in a cheatsheet.
+
+### Paper 2: The Latent Space of Equational Theories (Berlioz &amp; Mellies, 2026)
+- **arXiv:** 2601.20759
+- **Main Results:**
+  - Stone pairings create a feature space where PCA reveals: X-axis ~ expectation, Y-axis ~ variance, Z-axis ~ conjugacy
+  - Equivalent theories cluster tightly (reversible edges 7x shorter than atomic edges)
+  - Implications flow in oriented, well-structured patterns through the latent space
+  - Signature (a,b) is cleanly separated in the latent space
+  - &#34;Contrarian edges&#34; (hard implications) have unusual shapes in the latent space
+- **Key Insight for Hard3:** The notion that implications have a &#34;mainstream direction&#34; (higher expectation, higher variance) and that hard implications are &#34;contrarian&#34; — going against this flow — directly explains why hard3 problems are hard. They are deliberately curated to include these contrarian cases.
+
+## Analysis of V1 Predictor Performance on Hard3
+
+### Performance Summary
+
+| Split | Accuracy | Avg Log-Likelihood |
+|-------|----------|--------------------|
+| normal | 87.4% | -0.180 |
+| hard1 | 63.8% | -0.646 |
+| hard2 | 54.5% | -0.600 |
+| hard3 | 71.8% | -0.453 |
+
+### Error Breakdown on Hard3
+
+**113 errors out of 400 problems:**
+- **98 false negatives** (predicted False, actual True) — the dominant failure mode
+- **15 false positives** (predicted True, actual False)
+
+### False Negative Root Causes
+
+The 98 false negatives fall into clear categories:
+
+1. **p=0.5 bucket (31 cases):** ALL are `lhs_var -&gt; lhs_var` with `nvd=+1`. The probability map assigns exactly 0.50, which rounds to False. These are true implications where E1 has one more variable than E2. The BFS rewriting failed to find the proof, and no counterexample was found (correctly), but the heuristic probability is too low.
+
+2. **p=0.25-0.4 bucket (41 cases):** Mostly `lhs_var -&gt; lhs_var` with `nvd=0`. The probability map assigns ~0.34 for same-variable-count pairs, but these particular pairs happen to be true implications. BFS rewriting failed.
+
+3. **p=0.1-0.25 bucket (18 cases):** `lhs_var -&gt; lhs_var` and `lhs_var -&gt; general` with `nvd=-1`. The probability map penalizes cases where E1 has fewer variables, but these are true implications where a structurally simpler equation unexpectedly implies a more complex one.
+
+4. **p&lt;=0.02 bucket (5 cases):** Confident wrong predictions. These are cases like 2-var -&gt; 4-var implications that violate the &#34;more variables = stronger&#34; heuristic. Example: `x = y * (x * x)` implies `x = y * (z * (z * (w * x)))`.
+
+### False Positive Root Causes
+
+The 15 false positives are mostly at p=0.51-0.62 — marginal predictions just above threshold. These are `lhs_var -&gt; lhs_var` or `lhs_var -&gt; general` where the heuristic slightly favors True but the implication is actually False.
+
+### Key Insight: The Core Problem
+
+The v1 predictor&#39;s variable count heuristic is well-calibrated on average but cannot distinguish individual cases within the same (form, nvd) bucket. Hard3 is curated to contain exactly these ambiguous cases. Improving hard3 requires **finer-grained structural features** beyond variable count.
+
+## Proof Techniques in the Literature
+
+### For establishing implications (relevant to reducing false negatives)
+1. **BFS rewriting** — Currently limited to 500 steps, tree size &lt;=30. Many hard implications require longer chains.
+2. **ATP superposition** — Vampire/Prover9 can prove implications that BFS cannot, but are too heavy for a cheatsheet.
+3. **Canonizers** — Map terms to normal forms; if E1 and E2 have the same normal form, they&#39;re equivalent. Could detect more equivalences.
+4. **Expansion trees / Herbrand theorem** — Berlioz &amp; Mellies conjecture that parallel implications share similar proof structures (expansion trees).
+5. **Transitivity chains** — If E1 =&gt; E3 and E3 =&gt; E2, then E1 =&gt; E2. The predictor doesn&#39;t exploit known intermediate results.
+
+### For refuting implications (relevant to reducing false positives)
+1. **Finite magma search** — V1 uses ~200 magmas. The ETP found 524 critical magmas. Expanding the magma library could help.
+2. **Linear/quadratic constructions** — `x*y = ax+by+cxy mod n`. V1 includes these for small n.
+3. **Greedy infinite constructions** — Build magmas element-by-element. Not feasible for cheatsheet but informs which structures to include.
+
+## Gaps and Opportunities for Improving Hard3
+
+### Gap 1: BFS Rewriting Depth
+The BFS limit of 500 steps and tree size 30 is too small for many hard implications. Some implications require chains of 10+ rewrites with intermediate terms growing to size 50+. Increasing these limits (or using smarter search strategies like bidirectional BFS or guided search) could convert many false negatives to true positives.
+
+### Gap 2: Structural Features Beyond Variable Count
+The current heuristic relies primarily on (form1, form2, nvd). Additional features that could help:
+- **Tree depth** of expressions
+- **Variable multiplicities** (how many times each variable appears)
+- **Nesting patterns** (left-heavy vs right-heavy trees)
+- **Subterm sharing** between E1 and E2
+- **Idempotent subterms** (x*x patterns)
+- **Self-referential structure** (does the LHS variable appear at the root, leaves, or intermediate positions in the RHS?)
+
+### Gap 3: Stone Pairing Features
+The Berlioz &amp; Mellies paper shows that Stone pairings (satisfaction probabilities on random magmas) are highly informative. Computing Stone pairings for the specific equation pairs in hard3 could provide a strong signal for implications. Equations with similar Stone spectra are more likely to be equivalent or in an implication relationship.
+
+### Gap 4: Equivalence Class Exploitation
+Many of the 4694 equations are equivalent to each other (1415 equivalence classes). If E1 is equivalent to E1&#39; and E1&#39; =&gt; E2 is easier to prove/disprove, this could help. The predictor doesn&#39;t currently exploit transitivity through known equivalences.
+
+### Gap 5: The nvd=+1 Threshold Problem
+31 of 113 errors are because `lhs_var -&gt; lhs_var` at nvd=+1 maps to probability 0.50 (exactly at threshold). Simply adjusting this probability slightly upward (e.g., to 0.52) would correctly classify many of these as True, at the cost of some additional false positives. This is a calibration issue.
+
+## Recommendations for Proof Strategy
+
+1. **Recalibrate heuristic probabilities** using the hard3 training data. The current probabilities were calibrated on the full 22M matrix; hard3 has a different distribution.
+
+2. **Enhance BFS rewriting** with larger limits, bidirectional search, and smarter term selection.
+
+3. **Add structural features** to the cheatsheet: tree depth ratio, variable multiplicity patterns, and subterm overlap between E1 and E2.
+
+4. **Implement Stone pairing approximation** — even a rough estimate of satisfaction probability on a few canonical magmas provides signal.
+
+5. **Expand counterexample magma library** — include all 524 critical magmas from the ETP project, not just ~200.
+
+6. **Exploit idempotent structure** — many hard3 equations contain `x*x` subterms; idempotency-related reasoning patterns may help.
+
+7. **For the cheatsheet specifically**: focus on encoding decision rules that an LLM can follow, rather than computational procedures. The LLM cannot run BFS, but it can check structural patterns.
+
+
+════════════════════════════════════════════════════════════════════════════════
+                          PAPER REQUIREMENTS
+════════════════════════════════════════════════════════════════════════════════
+
+Generate a complete mathematics paper with the following structure:
+
+1. TITLE
+   - Clear, specific, informative
+   - Should convey the main result or the mathematical objects studied
+   - Mathematical convention: concise and precise
+
+2. AUTHOR
+   - Use this exact author line: Haokun Liu and NeuriCo
+
+3. ABSTRACT (150-250 words)
+   - State the problem or question investigated
+   - Summarize the main results (theorem statements in words)
+   - Mention proof techniques used
+   - Note any computational verification
+
+4. INTRODUCTION
+   - Mathematical problem and motivation
+   - History and context of the problem
+   - Summary of known results (with citations)
+   - Statement of main contributions (informal preview)
+   - Paper organization
+
+5. PRELIMINARIES
+   - Notation and conventions
+   - Definitions needed for the paper
+   - Prerequisite results (stated with citations, not reproved)
+   - This section ensures the paper is self-contained
+
+6. MAIN RESULTS
+   - Formal theorem statements
+   - Complete proofs
+   - Supporting lemmas and propositions with proofs
+   - Examples illustrating the results
+   - Remarks connecting to other areas
+
+7. DISCUSSION
+   - Implications of the results
+   - Connections to related problems
+   - Open questions and conjectures
+   - Possible generalizations
+
+8. CONCLUSION
+   - Summary of contributions
+   - Future directions
+
+9. REFERENCES
+   - BibTeX format
+   - All cited papers and textbooks
+
+════════════════════════════════════════════════════════════════════════════════
+                          OUTPUT FORMAT
+════════════════════════════════════════════════════════════════════════════════
+
+Create a MODULAR LaTeX project with the following directory structure:
+
+paper_draft/
+├── main.tex              # Main file that imports all sections
+├── references.bib        # BibTeX references
+├── sections/
+│   ├── abstract.tex      # Abstract content
+│   ├── introduction.tex  # Introduction section
+│   ├── preliminaries.tex # Definitions, notation, prerequisites
+│   ├── main_results.tex  # Theorems and proofs
+│   ├── discussion.tex    # Discussion and open questions
+│   └── conclusion.tex    # Conclusion section
+├── figures/              # Directory for any generated figures
+└── appendix/             # Directory for appendix sections (if needed)
+
+INSTRUCTIONS:
+1. First, create the directory structure above (mkdir -p paper_draft/sections paper_draft/figures paper_draft/appendix)
+2. Write main.tex using the AMS document class with proper theorem environments:
+
+   \documentclass{amsart}
+   \usepackage{amsmath,amssymb,amsthm}
+   \usepackage[hidelinks]{hyperref}
+   \usepackage{graphicx}
+   \usepackage{enumitem}
+
+   % Theorem environments
+   \newtheorem{theorem}{Theorem}[section]
+   \newtheorem{lemma}[theorem]{Lemma}
+   \newtheorem{proposition}[theorem]{Proposition}
+   \newtheorem{corollary}[theorem]{Corollary}
+   \newtheorem{conjecture}[theorem]{Conjecture}
+
+   \theoremstyle{definition}
+   \newtheorem{definition}[theorem]{Definition}
+   \newtheorem{example}[theorem]{Example}
+
+   \theoremstyle{remark}
+   \newtheorem{remark}[theorem]{Remark}
+
+   % Import command files (if they exist)
+   \InputIfFileExists{commands/math}{}{}
+   \InputIfFileExists{commands/general}{}{}
+   \InputIfFileExists{commands/macros}{}{}
+
+   % Bibliography style
+   \bibliographystyle{amsplain}
+
+   \author{Haokun Liu and NeuriCo}
+
+   - Use \input{sections/...} to include each section
+   - Use \bibliography{references} for references
+3. Write each section file with COMPLETE content (no placeholders)
+4. Each section file should include its \section{} command
+5. Write references.bib with all citations in BibTeX format
+6. After writing all files, compile the paper:
+   cd paper_draft && pdflatex -interaction=nonstopmode main.tex && bibtex main && pdflatex -interaction=nonstopmode main.tex && pdflatex -interaction=nonstopmode main.tex
+
+NOTE ON DOCUMENT CLASS:
+- Use \documentclass{amsart} (NOT \documentclass{article} with \usepackage{style})
+- The amsart class is part of the standard LaTeX distribution — no .sty file needed
+- It provides proper formatting for mathematical papers: theorem numbering,
+  proof environments, AMS math fonts, and standard math journal layout
+
+This modular structure allows humans to easily:
+- Edit individual sections without navigating a large file
+- Track changes per section
+- Reuse sections across different paper versions
+
+════════════════════════════════════════════════════════════════════════════════
+                          QUALITY REQUIREMENTS
+════════════════════════════════════════════════════════════════════════════════
+
+- Academic mathematical tone throughout
+- Every theorem must have a complete proof
+- All definitions must be precise and unambiguous
+- Proper citations using \cite{} commands
+- NO placeholder text - every section must have real content
+- The paper MUST compile without errors
+- If compilation fails, debug and fix the LaTeX errors
+
+════════════════════════════════════════════════════════════════════════════════
+                       MATHEMATICAL WRITING STYLE
+════════════════════════════════════════════════════════════════════════════════
+
+Follow these conventions for mathematical papers:
+
+1. LANGUAGE STYLE:
+   - Use "we" for collaborative exposition: "We prove", "We show", "We define"
+   - Be precise and direct: state results clearly before proving them
+   - Prefer plain language: "We now prove..." over "We shall henceforth demonstrate..."
+   - Use the present tense for mathematical facts: "Theorem 1 shows..."
+   - Avoid vague language: instead of "clearly" or "obviously", explain why
+
+2. INTRODUCTION STRUCTURE:
+   - Context and motivation (why this problem matters)
+   - History (what's known, with citations)
+   - Statement of results (informal but precise)
+   - Proof techniques (brief overview of methods)
+   - Paper organization (roadmap)
+
+3. THEOREM ENVIRONMENTS:
+   Use proper LaTeX theorem environments:
+   \begin{theorem}\label{thm:main}
+     Let $G$ be a graph with $n$ vertices. Then...
+   \end{theorem}
+
+   \begin{proof}
+     We proceed by induction on $n$. ...
+   \end{proof}
+
+4. DEFINITIONS:
+   \begin{definition}\label{def:widget}
+     A \emph{widget} is a pair $(X, \tau)$ where...
+   \end{definition}
+
+   - Italicize the term being defined using \emph{}
+   - State all conditions explicitly
+   - Give examples immediately after non-trivial definitions
+
+5. PROOF STRUCTURE:
+   - Begin with proof strategy: "The proof proceeds in two steps..."
+   - Number or label key claims within proofs
+   - Use \qedhere for proofs ending in displayed equations
+   - Signal transitions: "It remains to show...", "We now verify..."
+
+6. NOTATION CONVENTIONS:
+   - Define all notation in Preliminaries
+   - Use standard notation: $\mathbb{R}$, $\mathbb{Z}$, $\mathbb{N}$
+   - Use \coloneqq or := for definitions
+   - Be consistent: one symbol = one meaning throughout
+
+7. MATHEMATICAL FORMATTING:
+   - Displayed equations for important formulas: \[ ... \]
+   - Inline math for brief expressions: $...$
+   - Use align environment for multi-line equations
+   - Number only equations that are referenced later
+
+8. REFERENCES AND CITATIONS:
+   - Cite prior results when used: "By \cite{author2024}..."
+   - Distinguish between "Theorem 3 of \cite{...}" and your own results
+   - Include both classic references and recent work
+
+9. EXAMPLES AND COUNTEREXAMPLES:
+   - Illustrate each major result with a concrete example
+   - Show tightness: counterexamples demonstrating necessity of hypotheses
+   - Use \begin{example} ... \end{example} environment
+
+10. FIGURES (if applicable):
+    - Diagrams for geometric arguments
+    - Graphs or plots from computational verification
+    - Commutative diagrams for algebraic results
+    - Use TikZ or include pre-generated figures
+
+════════════════════════════════════════════════════════════════════════════════
+                          WORKFLOW: REVIEW AND REFLECT
+════════════════════════════════════════════════════════════════════════════════
+
+Before calling finish, you MUST complete these review steps:
+
+1. REVIEW RESOURCES (at the start):
+   - Read .claude/skills/paper-writer/SKILL.md for detailed guidance
+   - Study templates/paper_writing/lab_style_guide.md for style conventions
+   - Skim paper_draft/example_paper.tex for amsart LaTeX conventions only
+   - Browse paper_examples/ for language patterns (if available)
+
+2. SELF-REFLECTION (before finishing):
+   After writing all sections, review your work against these criteria:
+
+   MATHEMATICAL CONTENT CHECK:
+   - [ ] Every theorem has a complete, rigorous proof
+   - [ ] All definitions are precise with explicit quantifiers
+   - [ ] Examples illustrate major results
+   - [ ] Counterexamples show necessity of hypotheses where applicable
+   - [ ] Notation is consistent throughout
+
+   FORMATTING CHECK:
+   - [ ] Theorem environments (\begin{theorem}...\end{theorem}) used properly
+   - [ ] Proof environments (\begin{proof}...\end{proof}) used for all proofs
+   - [ ] Is hyperref package included for clickable references?
+   - [ ] Labels and cross-references work correctly
+   - [ ] Bibliography entries are complete
+
+   STRUCTURE CHECK:
+   - [ ] Introduction previews main results clearly
+   - [ ] Preliminaries section makes the paper self-contained
+   - [ ] Results are ordered logically (lemmas before theorems that use them)
+   - [ ] Does the paper compile without errors?
+
+3. FIX ISSUES:
+   - Address any issues found in the self-reflection
+   - Re-compile and verify the PDF looks correct
+
+Only after completing this review should you consider the paper finished.

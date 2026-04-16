@@ -1,0 +1,111 @@
+\section{Preliminaries}\label{sec:prelim}
+
+We collect the definitions and conventions used throughout the paper.
+Standard references for universal algebra and equational
+logic include Burris and Sankappanavar~\cite{burris1981course},
+McKenzie, McNulty, and Taylor~\cite{mckenzie1987algebras},
+and Taylor~\cite{taylor1979equational}.
+
+\subsection{Magmas and equational laws}
+
+\begin{definition}\label{def:magma}
+A \emph{magma} is a pair $(M, *)$ where $M$ is a nonempty set and
+$* \colon M \times M \to M$ is a binary operation.  No axioms are
+imposed on~$*$.
+\end{definition}
+
+We work in the first-order language $\mathcal{L} = \{*\}$ with a
+single binary function symbol.  \emph{Terms} are built from a countable
+set of variables $\{x, y, z, w, \ldots\}$ and the operation~$*$
+according to the usual recursive definition: each variable is a term,
+and if $s$ and~$t$ are terms then $s * t$ is a term.
+
+\begin{definition}\label{def:eq-law}
+An \emph{equational law} is a formal identity $s = t$ where $s$
+and~$t$ are terms in~$\mathcal{L}$.  A magma $(M,*)$ \emph{satisfies}
+$s = t$ if for every assignment $\sigma$ of the variables to elements
+of~$M$, the identity $\sigma(s) = \sigma(t)$ holds in $(M,*)$.
+\end{definition}
+
+\begin{definition}\label{def:implication}
+Let $E_1$ and $E_2$ be equational laws.  We say that $E_1$
+\emph{implies} $E_2$, written $E_1 \models E_2$, if every magma
+satisfying $E_1$ also satisfies~$E_2$.
+\end{definition}
+
+By Birkhoff's theorem~\cite{birkhoff1935structure}, $E_1 \models E_2$
+if and only if $E_2$ can be derived from $E_1$ using the rules of
+equational logic (reflexivity, symmetry, transitivity, substitution,
+and congruence).
+
+\subsection{The equation corpus}
+
+Following Bolan et al.~\cite{bolan2025equational}, we consider the
+finite set $\Eq$ of all equational laws with at most four occurrences
+of~$*$.  This set has $|\Eq| = 4694$ elements, partitioned into $1415$
+equivalence classes under mutual implication.  Of the
+$4694^2 = 22{,}033{,}636$ ordered pairs, $8{,}178{,}279$ (approximately
+$37.12\%$) are true implications.
+
+\subsection{Structural features of equational laws}\label{subsec:features}
+
+We define several syntactic features of an equational law $E\colon s = t$
+that are used in our prediction rules.
+
+\begin{definition}\label{def:structural}
+Let $E\colon s = t$ be an equational law.
+\begin{enumerate}[label=(\roman*)]
+\item The \emph{variable count} $\var(E)$ is the number of distinct
+  variables appearing in~$E$.
+\item The \emph{size} $\siz(E)$ is the total number of occurrences
+  of~$*$ in both $s$ and~$t$.
+\item The \emph{signature} of~$E$ is the pair $(a,b)$ where $a$
+  (resp.~$b$) is the number of occurrences of~$*$ on the left-hand
+  side (resp.\ right-hand side).
+\item We say $E$ is \emph{bare} if one side of $E$ is a single
+  variable.  Equivalently, $E$ has signature $(0, b)$ or $(a, 0)$
+  for some $a$ or~$b$.
+\item When $E$ is bare with a single variable $x$ on one side, we say
+  $x$ is the \emph{anchor variable}.  We say $E$ is \emph{lhs-var}
+  if $x$ appears on the left: $x = t$.
+\end{enumerate}
+\end{definition}
+
+Without loss of generality, we may assume bare equations are written
+in lhs-var form $x = t$ by applying symmetry.
+
+\begin{definition}\label{def:projections}
+Let $E\colon x = t$ be a bare, lhs-var equational law.
+\begin{enumerate}[label=(\roman*)]
+\item We say $E$ has the \emph{left-occurrence} property,
+  $\Lx(E) = \textsc{true}$, if the anchor variable~$x$ appears
+  as the left child of the root of~$t$.
+\item We say $E$ has the \emph{right-occurrence} property,
+  $\Rx(E) = \textsc{true}$, if the anchor variable~$x$ appears
+  as the right child of the root of~$t$.
+\item We say $E$ has the \emph{right-projection} property,
+  $\RP(E) = \textsc{true}$, if the right-hand side~$t$ can be
+  written as $u * x$ for some term~$u$ not containing~$x$.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}\label{def:topshape}
+The \emph{top shape} of a term $t$ records the structure of its
+two outermost levels.  If $t = s_1 * s_2$ and each $s_i$ is either
+a variable (denoted $v$) or a product $s_i = u * w$ (denoted $m$),
+then the top shape of~$t$ is one of $v$-$v$, $v$-$m$, $m$-$v$,
+or $m$-$m$.  If $t$ is a single variable, its top shape is~$v$.
+\end{definition}
+
+\subsection{Projection algebras}
+
+\begin{definition}\label{def:proj-alg}
+A magma $(M, *)$ is a \emph{left-projection algebra} if $a * b = a$
+for all $a, b \in M$.  It is a \emph{right-projection algebra} if
+$a * b = b$ for all $a, b \in M$.
+\end{definition}
+
+Left- and right-projection algebras are among the simplest magmas.
+Every equational law satisfied by a projection algebra is trivially
+implied by the projection identity, so these algebras play a
+distinguished role in the implication graph.

@@ -1,0 +1,26 @@
+{
+  "success": true,
+  "stages": {
+    "resource_finder": {
+      "success": true,
+      "completion_marker": "/workspaces/math-distillation-v2-0a91/.resource_finder_complete",
+      "outputs": {
+        "literature_review": "/workspaces/math-distillation-v2-0a91/literature_review.md",
+        "resources_catalog": "/workspaces/math-distillation-v2-0a91/resources.md",
+        "papers_dir": "/workspaces/math-distillation-v2-0a91/papers",
+        "code_dir": "/workspaces/math-distillation-v2-0a91/code"
+      },
+      "log_file": "/workspaces/math-distillation-v2-0a91/logs/resource_finder_claude.log",
+      "transcript_file": "/workspaces/math-distillation-v2-0a91/logs/resource_finder_claude_transcript.jsonl",
+      "elapsed_time": 803.5979940891266
+    },
+    "experiment_runner": {
+      "success": true,
+      "return_code": 0,
+      "elapsed_time": 1979.895039319992,
+      "log_file": "/workspaces/math-distillation-v2-0a91/logs/execution_claude.log",
+      "transcript_file": "/workspaces/math-distillation-v2-0a91/logs/execution_claude_transcript.jsonl"
+    }
+  },
+  "work_dir": "/workspaces/math-distillation-v2-0a91"
+}

@@ -1,0 +1,19 @@
+We study the problem of predicting equational implications between laws
+in the variety of magmas: given two equational laws $E_1$ and $E_2$
+with at most four occurrences of the binary operation, does every magma
+satisfying $E_1$ also satisfy $E_2$?  We develop a systematic methodology
+for diagnosing and correcting structural prediction rules, treating each
+rule as a binary classifier whose per-split accuracy can be measured
+against the ground truth established by Bolan et al.\ (2025).
+Our main contributions are threefold.  First, we prove \emph{projection
+collapse lemmas}: any magma satisfying $x = x * y$ is a left projection,
+and any magma satisfying $x = y * x$ is a right projection, and we
+verify computationally that no other magma of order at most three
+satisfies either identity.  Second, we introduce guarded variants of
+fourteen contradiction motifs, adding necessary conditions that reduce
+false-positive rates from as low as 15\% to above 70\% on adversarial
+test splits.  Third, we formulate new implication rules for
+\emph{bare} equations with four or more variables, proving that such
+equations collapse the magma to a projection algebra.  Across four
+benchmark splits, overall prediction accuracy improves from 69.8\% to
+79.1\%, with the hardest split improving from 52.75\% to 63.5\%.

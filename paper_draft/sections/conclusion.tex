@@ -1,0 +1,56 @@
+\section{Conclusion}\label{sec:conclusion}
+
+We presented a systematic diagnostic methodology for improving
+structural prediction rules for equational implication over magmas.
+By treating each rule as a binary classifier and measuring its
+precision across multiple test splits, we identified and corrected
+rules that were anti-correlated with the ground truth on adversarial
+instances.  Our main theoretical contributions---the projection
+collapse lemmas (Theorems~\ref{thm:left-proj}
+and~\ref{thm:right-proj})---are elementary but practically valuable,
+handling a class of implications that purely structural heuristics
+miss.
+
+The refined predictor achieves $79.1\%$ overall accuracy (up from
+$69.8\%$) and $63.5\%$ on the hardest split (up from $52.75\%$),
+while fitting within a $7.8$\,KB text cheatsheet.  The remaining
+errors ($146$ out of $400$ on \textsc{Hard3}) are dominated by
+cases requiring algebraic reasoning beyond syntactic features.
+
+Several directions for future work suggest themselves.
+
+\begin{enumerate}[label=(\roman*)]
+\item \textbf{Extended collapse classification.}  Theorems~\ref{thm:left-proj}
+  and~\ref{thm:right-proj} handle the simplest projection-forcing
+  equations.  A systematic classification of all equations in~$\Eq$
+  that force a projection algebra (or more generally, that force the
+  magma into a small number of isomorphism classes) would yield
+  additional implication rules.
+
+\item \textbf{Algebraic rewriting integration.}  Simple rewriting
+  chains---such as detecting idempotent laws ($x * x = x$) as
+  consequences---could be encoded as additional prediction rules.
+  The challenge is to identify rewriting patterns that are both
+  common enough to improve accuracy and simple enough to fit in a
+  compact cheatsheet.
+
+\item \textbf{Counterexample tables.}  The $16$ magmas of order~$2$
+  (or a curated subset of the $524$ critical magmas
+  from~\cite{bolan2025equational}) could be included in the cheatsheet
+  as a verification step.  A counterexample refuting $E_1 \models E_2$
+  provides a definitive \textsc{false} prediction and could eliminate
+  many of the residual false positives from contradiction motifs.
+
+\item \textbf{Stone pairing features.}  The geometric structure
+  revealed by Berlioz and Melli\`es~\cite{berlioz2026latent} suggests
+  that approximate Stone pairing values, computed on a few canonical
+  magmas, could serve as continuous features for prediction.  This
+  would bridge the gap between our discrete structural rules and the
+  continuous geometry of the implication lattice.
+
+\item \textbf{Confidence calibration.}  Our current predictor outputs
+  binary \textsc{true}/\textsc{false} predictions.  Assigning
+  calibrated confidence scores---based on the number and reliability
+  of rules that fire---could improve log-loss performance, which is
+  the primary competition metric.
+\end{enumerate}

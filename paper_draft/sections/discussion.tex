@@ -1,0 +1,162 @@
+\section{Discussion}\label{sec:discussion}
+
+\subsection{Accuracy summary}
+
+Table~\ref{tab:results} summarizes the prediction accuracy before
+and after applying the corrections described in Section~\ref{sec:main}.
+
+\begin{table}[ht]
+\centering
+\caption{Prediction accuracy across the four benchmark splits.
+Best results in each column are in \textbf{bold}.}\label{tab:results}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Split & Baseline & Improved & $\Delta$ & Instances \\
+\midrule
+\textsc{Normal} & 71.0\% & \textbf{82.4\%} & $+11.4$ & 1000 \\
+\textsc{Hard1}  & 65.2\% & \textbf{73.9\%} & $+8.7$  & 69 \\
+\textsc{Hard2}  & \textbf{99.5\%} & 95.5\% & $-4.0$  & 200 \\
+\textsc{Hard3}  & 52.75\% & \textbf{63.5\%} & $+10.75$ & 400 \\
+\midrule
+Overall         & 69.8\% & \textbf{79.1\%} & $+9.3$  & 1669 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The improvements on \textsc{Normal}, \textsc{Hard1}, and
+\textsc{Hard3} are substantial.  The regression on \textsc{Hard2}
+is discussed in Section~\ref{subsec:hard2}.
+
+\subsection{Remaining error analysis on \textsc{Hard3}}
+
+After all corrections, $146$ errors remain on the $400$-instance
+\textsc{Hard3} split.  These fall into four categories:
+\begin{enumerate}[label=(\roman*)]
+\item \textbf{Default false negatives (36 instances):} Pairs that
+  fall through all rules and receive the default prediction of
+  \textsc{false}.  These are predominantly bare source equations
+  with $\var(E_1) \in \{2, 3\}$ and non-bare source equations that
+  require algebraic reasoning beyond structural features.
+
+\item \textbf{Same-variable-count false negatives (32 instances):}
+  Pairs where $\var(E_1) = \var(E_2)$ and a rule correctly predicts
+  \textsc{false} in most cases, but the specific pair happens to be
+  a true implication.  Resolving these cases requires algebraic
+  analysis of the specific equations involved.
+
+\item \textbf{Residual motif false positives (31 instances):}
+  Cases where the guarded contradiction motifs $C_{10}$ and $C_{13}$
+  still fire incorrectly.  Further tightening of guard conditions
+  risks reducing the true-positive count below acceptable levels.
+
+\item \textbf{Size-based false negatives (10 instances):} Cases
+  where $\siz(E_2) < \siz(E_1)$ but $E_1 \models E_2$ holds.
+  After removing rule~$F_2$, a residual effect comes from other
+  rules that incorporate size comparisons.
+\end{enumerate}
+
+\begin{remark}\label{rem:algebraic-gap}
+Categories (i) and~(ii) together account for $68$ of $146$ errors
+($46.6\%$) and represent a fundamental limitation of structural
+prediction.  These cases require either direct algebraic proof (via
+term rewriting or equational deduction) or counterexample construction
+(via finite magma search), neither of which can be reliably encoded
+in a small set of syntactic rules.
+\end{remark}
+
+\subsection{The \textsc{Hard2} regression}\label{subsec:hard2}
+
+The \textsc{Hard2} split decreased from $99.5\%$ to $95.5\%$,
+a loss of $9$ correctly classified pairs.  All $9$ new errors
+are false negatives caused by the removal of rules $C_8$, $C_{14}$,
+$T_5$, and $T_7$.  These rules happened to fire correctly on
+\textsc{Hard2} instances despite being globally unreliable.
+
+This regression is an inherent tension in the multi-split
+evaluation framework.  The \textsc{Hard2} split was designed so
+that standard structural rules classify most pairs correctly,
+while \textsc{Hard3} was designed to defeat exactly those rules.
+Removing rules that \textsc{Hard3} exploits necessarily harms
+\textsc{Hard2} performance on the marginal cases where those
+rules were coincidentally correct.
+
+The trade-off is quantitatively favorable: the $9$ new errors on
+\textsc{Hard2} are outweighed by $43$ new correct predictions on
+\textsc{Hard3} (from $211$ to $254$ correct out of $400$) and
+$114$ new correct predictions on \textsc{Normal}.
+
+\subsection{Log-loss analysis}
+
+In addition to classification accuracy, we measured the average
+log-loss, treating each prediction as a probability estimate.
+Table~\ref{tab:logloss} reports the results.
+
+\begin{table}[ht]
+\centering
+\caption{Average log-loss by split (lower is better).
+Best results in \textbf{bold}.}\label{tab:logloss}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Split & Baseline & Improved \\
+\midrule
+\textsc{Normal} & $-1.343$ & $\mathbf{-0.819}$ \\
+\textsc{Hard1}  & $-1.608$ & $\mathbf{-1.209}$ \\
+\textsc{Hard2}  & $\mathbf{-0.033}$ & $-0.217$ \\
+\textsc{Hard3}  & $-2.181$ & $\mathbf{-1.687}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The log-loss reductions of $39\%$ (\textsc{Normal}), $25\%$
+(\textsc{Hard1}), and $23\%$ (\textsc{Hard3}) indicate that
+the improved rules not only classify more instances correctly
+but do so with higher confidence on average.
+
+\subsection{Connection to Stone pairings}
+
+Berlioz and Melli\`es~\cite{berlioz2026latent} showed that
+implications in the equational theory lattice tend to follow a
+``mainstream direction'' in the Stone pairing space: from equations
+with lower satisfaction probability to equations with higher
+satisfaction probability.  Hard implications---those that are
+difficult for automated methods---are precisely the
+``contrarian'' edges that go against this flow.
+
+Our structural predictor implicitly captures some aspects of
+this geometry.  For instance, bare source equations with many
+variables have low satisfaction probability on random magmas
+(since all variable assignments must satisfy the identity),
+and the corresponding implication targets tend to have higher
+satisfaction probability.  The projection collapse lemmas
+(Theorems~\ref{thm:left-proj} and~\ref{thm:right-proj})
+correspond to equations at extreme points in the Stone pairing
+space: the left- and right-projection identities have
+satisfaction probability $1/n$ and $1/n$ respectively on a
+random $n$-element magma.
+
+However, our predictor cannot capture the full geometry of the
+Stone pairing space, which requires computing satisfaction
+probabilities on specific finite magmas.  This suggests that a
+hybrid approach---combining structural rules with a small table
+of Stone pairing values for canonical magmas---could yield
+further improvements.
+
+\subsection{Comparison with computational approaches}
+
+The Equational Theories Project~\cite{bolan2025equational} used
+automated theorem provers (Vampire~\cite{kovacs2013vampire},
+Prover9~\cite{mccune2003prover9}) and systematic counterexample
+search to resolve all implications.  A BFS-based rewriting predictor
+from a prior iteration achieves $72\%$ accuracy on \textsc{Hard3},
+compared to our $63.5\%$.  The $8.5$ percentage-point gap arises
+from cases requiring:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item long rewriting chains ($>10$ steps) that structural features
+  cannot predict,
+\item counterexample construction using magmas of order $\geq 4$
+  that cannot be encoded in a $10$\,KB cheatsheet, and
+\item algebraic reasoning about absorbing elements and idempotent
+  subalgebras.
+\end{itemize}
+These limitations are inherent to the structural approach and
+motivate the hybrid methods discussed in Section~\ref{sec:conclusion}.
